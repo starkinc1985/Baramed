@@ -9,71 +9,64 @@ const menuData: Menu[] = [
   },
   {
     id: 2,
-    title: "Features",
+    title: "Products",
     newTab: false,
-    path: "/#features",
+    path: "/products",
   },
   {
-    id: 2.1,
+    id: 3,
+    title: "Browse By",
+    newTab: false,
+    submenu: [
+      {
+        id: 31,
+        title: "Instrument Type",
+        newTab: false,
+        path: "/products/by-instrument-type",
+      },
+      {
+        id: 32,
+        title: "Surgery Type",
+        newTab: false,
+        path: "/products/by-surgery-type",
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "About Us",
+    newTab: false,
+    path: "/about",
+  },
+  {
+    id: 5,
+    title: "Quality",
+    newTab: false,
+    path: "/quality-compliance",
+  },
+  {
+    id: 6,
+    title: "Services",
+    newTab: false,
+    path: "/services",
+  },
+  {
+    id: 7,
+    title: "Downloads",
+    newTab: false,
+    path: "/downloads",
+  },
+  {
+    id: 8,
     title: "Blog",
     newTab: false,
     path: "/blog",
   },
   {
-    id: 2.3,
-    title: "Docs",
+    id: 9,
+    title: "Contact",
     newTab: false,
-    path: "/docs",
-  },
-  {
-    id: 3,
-    title: "Pages",
-    newTab: false,
-    submenu: [
-      {
-        id: 31,
-        title: "Blog Grid",
-        newTab: false,
-        path: "/blog",
-      },
-      {
-        id: 34,
-        title: "Sign In",
-        newTab: false,
-        path: "/auth/signin",
-      },
-      {
-        id: 35,
-        title: "Sign Up",
-        newTab: false,
-        path: "/auth/signup",
-      },
-      {
-        id: 35,
-        title: "Docs",
-        newTab: false,
-        path: "/docs",
-      },
-      {
-        id: 35.1,
-        title: "Support",
-        newTab: false,
-        path: "/support",
-      },
-      {
-        id: 36,
-        title: "404",
-        newTab: false,
-        path: "/error",
-      },
-    ],
-  },
-
-  {
-    id: 4,
-    title: "Support",
-    newTab: false,
-    path: "/support",
+    path: "/contact",
   },
 ];
 

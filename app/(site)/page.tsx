@@ -1,40 +1,145 @@
 import { Metadata } from "next";
 import Hero from "@/components/Hero";
-import Brands from "@/components/Brands";
 import Feature from "@/components/Features";
-import About from "@/components/About";
-import FeaturesTab from "@/components/FeaturesTab";
-import FunFact from "@/components/FunFact";
-import Integration from "@/components/Integration";
+import Manufacturing from "@/components/Manufacturing";
+import Certifications from "@/components/Certifications";
+import YouTubeVideos from "@/components/YouTubeVideos";
 import CTA from "@/components/CTA";
 import FAQ from "@/components/FAQ";
-import Pricing from "@/components/Pricing";
-import Contact from "@/components/Contact";
 import Blog from "@/components/Blog";
-import Testimonial from "@/components/Testimonial";
+import { getFeaturedProducts } from "@/data/products";
+import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Bäramed - Premium Surgical Instruments",
-
-  // other metadata
-  description: "Leading provider of high-quality surgical instruments and medical equipment"
+  title: "BÄRAMED INSTRUMENTE GMBH - Premium Surgical Instruments",
+  description: "Leading German manufacturer of high-quality surgical instruments. ISO 13485 certified, CE marked, and MDR compliant.",
 };
 
 export default function Home() {
+  const featuredProducts = getFeaturedProducts();
+
   return (
     <main>
       <Hero />
-      <Brands />
+      
+      {/* Quick Navigation to Categories */}
+      <section className="bg-gray-50 py-20 lg:py-25 dark:bg-blacksection">
+        <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+          <div className="text-center mb-15">
+            <h2 className="mb-4 text-2xl font-bold text-black dark:text-white">
+              Browse Our Products
+            </h2>
+            <p className="text-regular text-waterloo">
+              Find instruments by type or surgical specialty
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <Link
+              href="/products/by-instrument-type"
+              className="group rounded-lg border border-stroke bg-white p-8 shadow-1 transition-all hover:border-primary hover:shadow-2 dark:border-strokedark dark:bg-blacksection"
+            >
+              <h3 className="mb-4 text-xl font-semibold text-black transition-colors group-hover:text-primary dark:text-white">
+                By Instrument Type
+              </h3>
+              <p className="mb-4 text-regular text-waterloo">
+                Browse by instrument category: Scissors, Forceps, Retractors, and more
+              </p>
+              <span className="inline-flex items-center gap-2 text-primary">
+                View Categories
+                <svg className="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
+            <Link
+              href="/products/by-surgery-type"
+              className="group rounded-lg border border-stroke bg-white p-8 shadow-1 transition-all hover:border-primary hover:shadow-2 dark:border-strokedark dark:bg-blacksection"
+            >
+              <h3 className="mb-4 text-xl font-semibold text-black transition-colors group-hover:text-primary dark:text-white">
+                By Surgery Type
+              </h3>
+              <p className="mb-4 text-regular text-waterloo">
+                Browse by surgical specialty: General, Orthopedic, ENT, Neurosurgery, and more
+              </p>
+              <span className="inline-flex items-center gap-2 text-primary">
+                View Categories
+                <svg className="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      {featuredProducts.length > 0 && (
+        <section className="py-20 lg:py-25">
+          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+            <div className="text-center mb-15">
+              <h2 className="mb-4 text-2xl font-bold text-black dark:text-white">
+                Featured Products
+              </h2>
+              <p className="text-regular text-waterloo">
+                Explore our most popular surgical instruments
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-7.5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10">
+              {featuredProducts.slice(0, 4).map((product) => (
+                <Link
+                  key={product.id}
+                  href={`/products/${product.id}`}
+                  className="group rounded-lg border border-stroke bg-white p-6 shadow-1 transition-all hover:shadow-2 dark:border-strokedark dark:bg-blacksection"
+                >
+                  <div className="mb-4 aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
+                    {product.images[0] ? (
+                      <Image
+                        src={product.images[0]}
+                        alt={product.name}
+                        width={300}
+                        height={300}
+                        className="h-full w-full object-cover transition-transform group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="flex h-full items-center justify-center text-waterloo">
+                        No Image
+                      </div>
+                    )}
+                  </div>
+                  <h3 className="mb-2 font-semibold text-black dark:text-white">
+                    {product.name}
+                  </h3>
+                  <p className="mb-2 text-sm text-waterloo">
+                    Code: {product.productCode}
+                  </p>
+                  <p className="text-sm text-waterloo line-clamp-2">
+                    {product.shortDescription || product.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+            <div className="mt-10 text-center">
+              <Link
+                href="/products"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-regular font-medium text-white duration-300 ease-in-out hover:bg-primaryho"
+              >
+                View All Products
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <Manufacturing />
+      <Certifications />
+      <YouTubeVideos />
       <Feature />
-      <About />
-      <FeaturesTab />
-      <FunFact />
-      <Integration />
-      <CTA />
       <FAQ />
-      <Testimonial />
-      <Pricing />
-      <Contact />
+      <CTA />
       <Blog />
     </main>
   );

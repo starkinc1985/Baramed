@@ -6,6 +6,7 @@ import Lines from "@/components/Lines";
 import ScrollToTop from "@/components/ScrollToTop";
 import { ThemeProvider } from "next-themes";
 import ToasterContext from "../context/ToastContext";
+import { InquiryCartProvider } from "@/context/InquiryCartContext";
 
 export default function ClientLayout({
     children,
@@ -18,12 +19,14 @@ export default function ClientLayout({
             attribute="class"
             defaultTheme="light"
         >
-            <Lines />
-            <Header />
-            <ToasterContext />
-            {children}
-            <Footer />
-            <ScrollToTop />
+            <InquiryCartProvider>
+                <Lines />
+                <Header />
+                <ToasterContext />
+                {children}
+                <Footer />
+                <ScrollToTop />
+            </InquiryCartProvider>
         </ThemeProvider>
     );
 }
