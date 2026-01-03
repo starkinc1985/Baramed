@@ -97,18 +97,18 @@ export default async function SubcategoryPage({
         </div>
       </section>
 
-      {products.length > 0 ? (
-        <section className="py-20 lg:py-25">
-          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-            <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-black dark:text-white">
-                  {subcategory.name} Products
-                </h2>
-                <p className="mt-1 text-sm text-waterloo">
-                  Showing {products.length} {products.length === 1 ? 'product' : 'products'}
-                </p>
-              </div>
+        {products.length > 0 ? (
+          <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
+            <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+              <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-semibold text-black dark:text-white lg:text-2xl">
+                    {subcategory.name} Products
+                  </h2>
+                  <p className="mt-0.5 text-xs text-waterloo">
+                    Showing {products.length} {products.length === 1 ? 'product' : 'products'}
+                  </p>
+                </div>
               <Link
                 href={`/products/by-instrument-type/${category.slug}`}
                 className="inline-flex items-center gap-2 rounded-lg border border-stroke bg-white px-4 py-2 text-sm font-medium text-waterloo transition-colors hover:border-primary hover:text-primary dark:border-strokedark dark:bg-blacksection"
@@ -137,11 +137,11 @@ export default async function SubcategoryPage({
             </div>
           </div>
         </section>
-      ) : (
-        <section className="py-20 lg:py-25">
-          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-            <div className="rounded-lg border border-stroke bg-white p-12 text-center dark:border-strokedark dark:bg-blacksection">
-              <p className="text-waterloo mb-4">No products found in this subcategory.</p>
+        ) : (
+          <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
+            <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+              <div className="rounded-lg border border-stroke bg-white p-6 text-center dark:border-strokedark dark:bg-blacksection">
+                <p className="text-sm text-waterloo mb-3">No products found in this subcategory.</p>
               <Link
                 href={`/products/by-instrument-type/${category.slug}`}
                 className="inline-flex items-center gap-2 text-primary hover:underline"

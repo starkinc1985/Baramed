@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Manufacturing = () => {
   return (
-    <section className="py-20 lg:py-25 xl:py-30">
+    <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
       <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
         <SectionHeader
           headerInfo={{
@@ -13,17 +13,17 @@ const Manufacturing = () => {
           }}
         />
 
-        <div className="mt-15 grid grid-cols-1 gap-7.5 md:grid-cols-2 lg:grid-cols-3 xl:gap-10">
-          <div className="rounded-lg border border-stroke bg-white p-8 shadow-1 dark:border-strokedark dark:bg-blacksection">
-            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-              <svg className="h-8 w-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="rounded-lg border border-stroke bg-white p-4 dark:border-strokedark dark:bg-blacksection">
+            <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+              <svg className="h-6 w-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
               </svg>
             </div>
-            <h3 className="mb-4 text-xl font-semibold text-black dark:text-white">
+            <h3 className="mb-2 text-lg font-semibold text-black dark:text-white">
               Precision Manufacturing
             </h3>
-            <p className="text-regular text-waterloo">
+            <p className="text-sm text-waterloo">
               Advanced CNC machining and precision grinding ensure consistent quality 
               and dimensional accuracy in every instrument.
             </p>
@@ -105,13 +105,13 @@ const Manufacturing = () => {
           </div>
         </div>
 
-        <div className="mt-15 text-center">
+        <div className="mt-4 text-center">
           <Link
             href="/about"
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-regular font-medium text-white duration-300 ease-in-out hover:bg-primaryho"
+            className="inline-flex items-center gap-1.5 rounded border border-primary bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primaryho"
           >
             Learn More About Our Manufacturing
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </Link>

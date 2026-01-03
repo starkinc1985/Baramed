@@ -4,44 +4,30 @@ const BlogData: Blog[] = [
   {
     _id: 1,
     mainImage: "/images/blog/blog-01.png",
-    title: "Free advertising for your online business",
+    title: "Announcing the Launch of Our New Website 2024",
     metadata:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit convallis tortor.",
+      "We are very excited to announce the launch of our newly designed website. After months of hard work, we're proud to present an improved platform for browsing our comprehensive range of surgical instruments.",
   },
   {
     _id: 2,
     mainImage: "/images/blog/blog-02.png",
-    title: "9 simple ways to improve your design skills",
+    title: "Company Statement on Quality Standards",
     metadata:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit convallis tortor.",
+      "At Bäramed Instruments, our founding principle has always been driven to help improve patient health outcomes through precision manufacturing and rigorous quality control processes.",
   },
   {
-    _id: 2,
+    _id: 3,
     mainImage: "/images/blog/blog-03.png",
-    title: "Tips to quickly improve your coding speed.",
+    title: "New ISO 13485:2016 Certification Achieved",
     metadata:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit convallis tortor.",
+      "We are pleased to announce that Bäramed Instruments has successfully achieved ISO 13485:2016 certification, demonstrating our commitment to medical device quality management.",
   },
   {
-    _id: 1,
-    mainImage: "/images/blog/blog-03.png",
-    title: "Free advertising for your online business",
-    metadata:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit convallis tortor.",
-  },
-  {
-    _id: 2,
+    _id: 4,
     mainImage: "/images/blog/blog-04.png",
-    title: "9 simple ways to improve your design skills",
+    title: "Expanding Our Global Distribution Network",
     metadata:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit convallis tortor.",
-  },
-  {
-    _id: 2,
-    mainImage: "/images/blog/blog-01.png",
-    title: "Tips to quickly improve your coding speed.",
-    metadata:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit convallis tortor.",
+      "Bäramed Instruments is expanding its global reach with new distribution partnerships in key markets, ensuring timely delivery of high-quality surgical instruments worldwide.",
   },
 ];
 

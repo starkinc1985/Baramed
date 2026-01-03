@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function InstrumentTypePage() {
   return (
     <main className="pt-20">
-      <section className="bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900 py-20 lg:py-30">
+      <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <Breadcrumb
             items={[
@@ -22,19 +22,19 @@ export default function InstrumentTypePage() {
             ]}
           />
           <div className="text-center">
-            <h1 className="mb-5 text-3xl font-bold text-black dark:text-white xl:text-hero">
+            <h1 className="mb-2 text-2xl font-bold text-black dark:text-white lg:text-3xl">
               Browse by Instrument Type
             </h1>
-            <p className="mx-auto mb-8 max-w-[600px] text-regular text-waterloo">
+            <p className="mx-auto mb-0 max-w-[600px] text-sm text-waterloo">
               Find the perfect surgical instrument organized by type and function
             </p>
           </div>
         </div>
       </section>
 
-      <section className="py-20 lg:py-25">
+      <section className="bg-gray-50 py-6 dark:bg-blacksection">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {instrumentTypeCategories.map((category) => (
               <CategoryCard
                 key={category.id}

@@ -75,7 +75,7 @@ const Hero = () => {
             </div>
 
             {/* Optional: Keep image visible on larger screens if needed, or remove this section */}
-            <div className="mt-10 hidden lg:block lg:w-1/2">
+            {/* <div className="mt-10 hidden lg:block lg:w-1/2">
               <div className="relative aspect-700/444 w-full overflow-hidden rounded-lg shadow-solid-l">
                 <Image
                   className="object-cover"
@@ -84,7 +84,7 @@ const Hero = () => {
                   fill
                 />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>

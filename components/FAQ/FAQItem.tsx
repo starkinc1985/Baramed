@@ -10,53 +10,50 @@ const FAQItem = ({ faqData }: { faqData: FaqData }) => {
   const { activeFaq, id, handleFaqToggle, quest, ans } = faqData;
 
   return (
-    <>
-      <div className="flex flex-col border-b border-stroke last-of-type:border-none dark:border-strokedark">
-        <button
-          onClick={() => {
-            handleFaqToggle(id);
-          }}
-          className="flex cursor-pointer items-center justify-between px-6 py-5 text-metatitle3 font-medium text-black dark:text-white lg:px-9 lg:py-7.5"
-        >
-          {quest}
-
+    <div className="mb-3 flex min-h-[60px] flex-col rounded-lg border border-stroke bg-white last:mb-0 dark:border-strokedark dark:bg-blacksection">
+      <button
+        onClick={() => {
+          handleFaqToggle(id);
+        }}
+        className="flex min-h-[60px] cursor-pointer items-center justify-between px-4 py-3 text-left transition-colors hover:bg-gray-50 dark:hover:bg-gray-900"
+      >
+        <span className="pr-4 text-xs font-semibold uppercase leading-tight text-black dark:text-white sm:text-sm">
+          Q. {quest}
+        </span>
+        <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center">
           {activeFaq === id ? (
             <svg
-              width="18"
-              height="4"
-              viewBox="0 0 18 4"
+              className="h-4 w-4 text-primary"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <path
-                d="M17.1666 0.833374H10.1666H7.83331H0.833313V3.16671H7.83331H10.1666H17.1666V0.833374Z"
-                fill="currentColor"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 12H4" />
             </svg>
           ) : (
             <svg
-              width="18"
-              height="18"
-              viewBox="0 0 18 18"
+              className="h-4 w-4 text-primary"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <path
-                d="M7.83331 7.83337V0.833374H10.1666V7.83337H17.1666V10.1667H10.1666V17.1667H7.83331V10.1667H0.833313V7.83337H7.83331Z"
-                fill="currentColor"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
             </svg>
           )}
-        </button>
-        <p
-          className={`border-t border-stroke px-6 py-5 dark:border-strokedark lg:px-9 lg:py-7.5 ${
-            activeFaq === id ? "block" : "hidden"
-          }`}
-        >
-          {ans}
-        </p>
+        </div>
+      </button>
+      <div
+        className={`overflow-hidden transition-all duration-300 ${
+          activeFaq === id ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="border-t border-stroke px-4 py-3 dark:border-strokedark">
+          <p className="text-sm leading-relaxed text-waterloo">
+            {ans}
+          </p>
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 

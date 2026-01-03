@@ -68,11 +68,11 @@ export default async function ProductDetailPage({
 
   return (
     <main className="pt-20">
-      <section className="py-20 lg:py-25">
+      <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <Breadcrumb items={breadcrumbItems} />
 
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Product Images */}
             <div>
               <div className="mb-4 aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
@@ -191,26 +191,26 @@ export default async function ProductDetailPage({
 
           {/* Related Products */}
           {relatedProducts.length > 0 && (
-            <div className="mt-16 pt-10 border-t border-stroke dark:border-strokedark">
-              <div className="mb-8 flex items-center justify-between">
+            <div className="mt-6 pt-4 border-t border-stroke dark:border-strokedark">
+              <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-semibold text-black dark:text-white">
+                  <h2 className="text-xl font-semibold text-black dark:text-white lg:text-2xl">
                     Related Products
                   </h2>
-                  <p className="mt-1 text-sm text-waterloo">
+                  <p className="mt-0.5 text-xs text-waterloo">
                     More {category?.name.toLowerCase()} instruments
                   </p>
                 </div>
                 {category && (
                   <Link
                     href={`/products/by-instrument-type/${category.slug}`}
-                    className="text-sm font-medium text-primary hover:underline"
+                    className="text-xs font-medium text-primary hover:underline"
                   >
                     View All {category.name} →
                   </Link>
                 )}
               </div>
-              <div className="grid grid-cols-1 gap-7.5 md:grid-cols-2 lg:grid-cols-4 xl:gap-10">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {relatedProducts.map((relatedProduct) => (
                   <ProductCard key={relatedProduct.id} product={relatedProduct} />
                 ))}

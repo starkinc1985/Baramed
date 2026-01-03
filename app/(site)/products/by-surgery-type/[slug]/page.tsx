@@ -129,18 +129,18 @@ export default async function SurgeryTypeDetailPage({
         </div>
       </section>
 
-      {category.subcategories && category.subcategories.length > 0 && (
-        <section className="py-10 bg-white dark:bg-blacksection">
-          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-            <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-black dark:text-white">
-                Browse by Instrument Type
-              </h2>
-              <span className="text-sm text-waterloo">
-                {category.subcategories.length} instrument types available
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        {category.subcategories && category.subcategories.length > 0 && (
+          <section className="border-b border-stroke bg-gray-50 py-4 dark:border-strokedark dark:bg-blacksection">
+            <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+              <div className="mb-3 flex items-center justify-between">
+                <h2 className="text-lg font-semibold text-black dark:text-white">
+                  Browse by Instrument Type
+                </h2>
+                <span className="text-xs text-waterloo">
+                  {category.subcategories.length} instrument types available
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
               {category.subcategories.map((subcat) => {
                 const instrumentTypeSlug = getInstrumentTypeSlug(subcat.slug);
                 const subcatProducts = products.filter((p) => {
@@ -152,26 +152,14 @@ export default async function SurgeryTypeDetailPage({
                   <Link
                     key={subcat.id}
                     href={`/products/by-instrument-type/${instrumentTypeSlug}`}
-                    className="group relative overflow-hidden rounded-2xl border-2 border-stroke bg-white shadow-md transition-all duration-300 hover:border-primary hover:shadow-2xl hover:-translate-y-1 dark:border-strokedark dark:bg-blacksection"
+                    className="group flex min-h-[75px] flex-col items-center justify-center rounded border border-stroke bg-white p-3 text-center transition-all hover:border-primary hover:bg-primary/5 dark:border-strokedark dark:bg-blacksection"
                   >
-                    <div className="relative h-32 w-full overflow-hidden bg-gray-100">
-                      <Image
-                        src={subcatImage}
-                        alt={subcat.name}
-                        fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-110"
-                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                    </div>
-                    <div className="p-4 text-center">
-                      <span className="block font-bold text-black dark:text-white group-hover:text-primary transition-colors">
-                        {subcat.name}
-                      </span>
-                      <span className="mt-1 block text-xs font-medium text-waterloo">
-                        {subcatProducts.length} {subcatProducts.length === 1 ? 'product' : 'products'}
-                      </span>
-                    </div>
+                    <span className="block font-semibold text-xs text-black transition-colors group-hover:text-primary dark:text-white">
+                      {subcat.name}
+                    </span>
+                    <span className="mt-1 block text-xs font-medium text-primary">
+                      {subcatProducts.length} {subcatProducts.length === 1 ? 'product' : 'products'}
+                    </span>
                   </Link>
                 );
               })}
@@ -180,44 +168,44 @@ export default async function SurgeryTypeDetailPage({
         </section>
       )}
 
-      {products.length > 0 && (
-        <section className="py-20 lg:py-25">
-          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-            <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-black dark:text-white">
-                  All {category.name} Products
-                </h2>
-                <p className="mt-1 text-sm text-waterloo">
-                  Showing {products.length} {products.length === 1 ? 'product' : 'products'}
-                </p>
-              </div>
-              {category.subcategories && category.subcategories.length > 0 && (
-                <div className="flex gap-2">
-                  <span className="text-sm text-waterloo self-center">Filter by:</span>
-                  <div className="flex flex-wrap gap-2">
-                    {category.subcategories.slice(0, 3).map((subcat) => {
-                      const instrumentTypeSlug = getInstrumentTypeSlug(subcat.slug);
-                      const subcatProducts = products.filter((p) => {
-                        return p.category === instrumentTypeSlug;
-                      });
-                      if (subcatProducts.length === 0) return null;
-                      return (
-                        <Link
-                          key={subcat.id}
-                          href={`/products/by-instrument-type/${instrumentTypeSlug}`}
-                          className="rounded-full border border-stroke bg-white px-3 py-1 text-xs font-medium text-waterloo transition-colors hover:border-primary hover:text-primary dark:border-strokedark dark:bg-blacksection"
-                        >
-                          {subcat.name} ({subcatProducts.length})
-                        </Link>
-                      );
-                    })}
-                  </div>
+        {products.length > 0 && (
+          <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
+            <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+              <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div>
+                  <h2 className="text-xl font-semibold text-black dark:text-white lg:text-2xl">
+                    All {category.name} Products
+                  </h2>
+                  <p className="mt-0.5 text-xs text-waterloo">
+                    Showing {products.length} {products.length === 1 ? 'product' : 'products'}
+                  </p>
                 </div>
-              )}
+                {category.subcategories && category.subcategories.length > 0 && (
+                  <div className="flex gap-1.5">
+                    <span className="text-xs text-waterloo self-center">Filter:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {category.subcategories.slice(0, 3).map((subcat) => {
+                        const instrumentTypeSlug = getInstrumentTypeSlug(subcat.slug);
+                        const subcatProducts = products.filter((p) => {
+                          return p.category === instrumentTypeSlug;
+                        });
+                        if (subcatProducts.length === 0) return null;
+                        return (
+                          <Link
+                            key={subcat.id}
+                            href={`/products/by-instrument-type/${instrumentTypeSlug}`}
+                            className="rounded border border-stroke bg-white px-2 py-0.5 text-xs font-medium text-waterloo transition-colors hover:border-primary hover:text-primary dark:border-strokedark dark:bg-blacksection"
+                          >
+                            {subcat.name} ({subcatProducts.length})
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
             </div>
 
-            <div className="grid grid-cols-1 gap-7.5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -226,11 +214,11 @@ export default async function SurgeryTypeDetailPage({
         </section>
       )}
 
-      {products.length === 0 && (
-        <section className="py-20 lg:py-25">
-          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-            <div className="rounded-lg border border-stroke bg-white p-12 text-center dark:border-strokedark dark:bg-blacksection">
-              <p className="text-waterloo mb-4">No products found for this surgery type.</p>
+        {products.length === 0 && (
+          <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
+            <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+              <div className="rounded-lg border border-stroke bg-white p-6 text-center dark:border-strokedark dark:bg-blacksection">
+                <p className="text-sm text-waterloo mb-3">No products found for this surgery type.</p>
               <Link
                 href="/products/by-surgery-type"
                 className="inline-flex items-center gap-2 text-primary hover:underline"

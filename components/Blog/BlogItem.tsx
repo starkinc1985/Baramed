@@ -1,6 +1,5 @@
 "use client";
 import { Blog } from "@/types/blog";
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,39 +7,28 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
   const { mainImage, title, metadata } = blog;
 
   return (
-    <>
-      <motion.div
-        variants={{
-          hidden: {
-            opacity: 0,
-            y: -20,
-          },
-
-          visible: {
-            opacity: 1,
-            y: 0,
-          },
-        }}
-        initial="hidden"
-        whileInView="visible"
-        transition={{ duration: 1, delay: 0.5 }}
-        viewport={{ once: true }}
-        className="animate_top rounded-lg bg-white p-4 pb-9 shadow-solid-8 dark:bg-blacksection"
-      >
-        <Link href={`/blog/`} className="relative block aspect-368/239">
-          <Image src={mainImage} alt={title} fill />
-        </Link>
-
-        <div className="px-4">
-          <h3 className="mb-3.5 mt-7.5 line-clamp-2 inline-block text-lg font-medium text-black duration-300 hover:text-primary dark:text-white dark:hover:text-primary xl:text-itemtitle2">
-            <Link href={`/blog/blog-details`}>
-              {`${title.slice(0, 40)}...`}
-            </Link>
-          </h3>
-          <p className="line-clamp-3">{metadata}</p>
-        </div>
-      </motion.div>
-    </>
+    <Link
+      href={`/blog/blog-details`}
+      className="group mb-3 flex min-h-[80px] gap-3 rounded-lg border border-green-200 bg-white p-3 transition-all last:mb-0 hover:border-green-400 hover:shadow-sm dark:border-green-800 dark:bg-blacksection dark:hover:border-green-600"
+    >
+      <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded bg-gray-100">
+        <Image
+          src={mainImage}
+          alt={title}
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-110"
+          sizes="64px"
+        />
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col justify-center">
+        <h3 className="mb-1.5 line-clamp-2 text-sm font-bold leading-tight text-black transition-colors group-hover:text-green-700 dark:text-white dark:group-hover:text-green-400">
+          {title}
+        </h3>
+        <p className="line-clamp-2 text-xs leading-relaxed text-waterloo">
+          {metadata}
+        </p>
+      </div>
+    </Link>
   );
 };
 

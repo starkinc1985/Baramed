@@ -1,33 +1,21 @@
 import React from "react";
-import SectionHeader from "../Common/SectionHeader";
 import BlogItem from "./BlogItem";
 import BlogData from "./blogData";
+import Link from "next/link";
 
-const Blog = async () => {
+const Blog = () => {
   return (
-    <section className="py-20 lg:py-25 xl:py-30">
-      <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-        {/* <!-- Section Title Start --> */}
-        <div className="animate_top mx-auto text-center">
-          <SectionHeader
-            headerInfo={{
-              title: `NEWS & BLOGS`,
-              subtitle: `Latest News & Blogs`,
-              description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. In convallis tortor eros. Donec vitae tortor lacus. Phasellus aliquam ante in maximus.`,
-            }}
-          />
-        </div>
-        {/* <!-- Section Title End --> */}
-      </div>
-
-      <div className="mx-auto mt-15 max-w-c-1280 px-4 md:px-8 xl:mt-20 xl:px-0">
-        <div className="grid grid-cols-1 gap-7.5 md:grid-cols-2 lg:grid-cols-3 xl:gap-10">
-          {BlogData.slice(0, 3).map((blog, key) => (
-            <BlogItem blog={blog} key={key} />
-          ))}
-        </div>
-      </div>
-    </section>
+    <div className="flex flex-col">
+      {BlogData.slice(0, 2).map((blog, key) => (
+        <BlogItem blog={blog} key={key} />
+      ))}
+      <Link
+        href="/blog"
+        className="mt-3 flex w-full items-center justify-center rounded-lg border border-green-200 bg-white px-4 py-2.5 text-sm font-medium text-green-700 transition-all hover:border-green-400 hover:bg-green-50 hover:text-green-800 dark:border-green-800 dark:bg-blacksection dark:text-green-400 dark:hover:border-green-600 dark:hover:bg-green-950/30"
+      >
+        See All
+      </Link>
+    </div>
   );
 };
 
