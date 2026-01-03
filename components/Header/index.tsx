@@ -9,10 +9,17 @@ import menuData from "./menuData";
 
 const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
-  const [dropdownToggler, setDropdownToggler] = useState(false);
+  const [dropdownToggler, setDropdownToggler] = useState<Record<number, boolean>>({});
   const [stickyMenu, setStickyMenu] = useState(false);
 
   const pathUrl = usePathname();
+
+  const toggleDropdown = (id: number) => {
+    setDropdownToggler((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   // Sticky menu
   const handleStickyMenu = () => {
@@ -102,9 +109,9 @@ const Header = () => {
                 <li key={key} className={`${menuItem.submenu ? "group relative" : ""} flex-shrink-0`}>
                   {menuItem.submenu ? (
                     <>
-                      <button
-                        onClick={() => setDropdownToggler(!dropdownToggler)}
-                        className="flex cursor-pointer items-center gap-1.5 whitespace-nowrap text-sm font-medium text-black transition-colors hover:text-primary dark:text-white xl:text-regular"
+                      <Link
+                        href={menuItem.path || "#"}
+                        className="group/link flex cursor-pointer items-center gap-1.5 whitespace-nowrap text-sm font-medium text-black transition-colors hover:text-primary dark:text-white xl:text-regular"
                       >
                         {menuItem.title}
                         <span className="flex-shrink-0">
@@ -116,14 +123,37 @@ const Header = () => {
                             <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
                           </svg>
                         </span>
-                      </button>
+                      </Link>
 
-                      <ul
-                        className={`dropdown ${dropdownToggler ? "flex" : ""}`}
-                      >
-                        {menuItem.submenu.map((item, key) => (
-                          <li key={key} className="hover:text-primary">
-                            <Link href={item.path || "#"}>{item.title}</Link>
+                      <ul className="dropdown xl:w-auto xl:min-w-[700px] xl:max-w-[900px] xl:grid xl:grid-cols-3 xl:gap-8 xl:px-10 xl:py-8">
+                        {menuItem.submenu.map((item, subKey) => (
+                          <li key={subKey} className="mb-4 last:mb-0">
+                            {item.submenu ? (
+                              <div>
+                                <Link
+                                  href={item.path || "#"}
+                                  className="mb-3 block text-sm font-bold text-black transition-colors hover:text-primary dark:text-white"
+                                >
+                                  {item.title}
+                                </Link>
+                                <ul className="space-y-2">
+                                  {item.submenu.map((subItem, subSubKey) => (
+                                    <li key={subSubKey}>
+                                      <Link
+                                        href={subItem.path || "#"}
+                                        className="block text-sm text-waterloo transition-colors hover:text-primary dark:text-manatee"
+                                      >
+                                        {subItem.title}
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ) : (
+                              <Link href={item.path || "#"} className="block text-sm font-semibold text-black transition-colors hover:text-primary dark:text-white">
+                                {item.title}
+                              </Link>
+                            )}
                           </li>
                         ))}
                       </ul>
