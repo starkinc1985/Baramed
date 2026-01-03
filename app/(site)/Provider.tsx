@@ -20,7 +20,7 @@ export default function ClientLayout({
             defaultTheme="light"
         >
             <InquiryCartProvider>
-                <Lines />
+                {/* <Lines /> */}
                 <Header />
                 <ToasterContext />
                 {children}

@@ -14,25 +14,6 @@ const menuData: Menu[] = [
     path: "/products",
   },
   {
-    id: 3,
-    title: "Browse By",
-    newTab: false,
-    submenu: [
-      {
-        id: 31,
-        title: "Instrument Type",
-        newTab: false,
-        path: "/products/by-instrument-type",
-      },
-      {
-        id: 32,
-        title: "Surgery Type",
-        newTab: false,
-        path: "/products/by-surgery-type",
-      },
-    ],
-  },
-  {
     id: 4,
     title: "About Us",
     newTab: false,
@@ -55,12 +36,6 @@ const menuData: Menu[] = [
     title: "Downloads",
     newTab: false,
     path: "/downloads",
-  },
-  {
-    id: 8,
-    title: "Blog",
-    newTab: false,
-    path: "/blog",
   },
   {
     id: 9,

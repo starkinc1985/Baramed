@@ -9,7 +9,7 @@ import FAQ from "@/components/FAQ";
 import Blog from "@/components/Blog";
 import { getFeaturedProducts } from "@/data/products";
 import Link from "next/link";
-import Image from "next/image";
+import ProductCard from "@/components/Product/ProductCard";
 
 export const metadata: Metadata = {
   title: "BÄRAMED INSTRUMENTE GMBH - Premium Surgical Instruments",
@@ -87,36 +87,7 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 gap-7.5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10">
               {featuredProducts.slice(0, 4).map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/products/${product.id}`}
-                  className="group rounded-lg border border-stroke bg-white p-6 shadow-1 transition-all hover:shadow-2 dark:border-strokedark dark:bg-blacksection"
-                >
-                  <div className="mb-4 aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
-                    {product.images[0] ? (
-                      <Image
-                        src={product.images[0]}
-                        alt={product.name}
-                        width={300}
-                        height={300}
-                        className="h-full w-full object-cover transition-transform group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-waterloo">
-                        No Image
-                      </div>
-                    )}
-                  </div>
-                  <h3 className="mb-2 font-semibold text-black dark:text-white">
-                    {product.name}
-                  </h3>
-                  <p className="mb-2 text-sm text-waterloo">
-                    Code: {product.productCode}
-                  </p>
-                  <p className="text-sm text-waterloo line-clamp-2">
-                    {product.shortDescription || product.description}
-                  </p>
-                </Link>
+                <ProductCard key={product.id} product={product} />
               ))}
             </div>
             <div className="mt-10 text-center">
@@ -144,3 +115,4 @@ export default function Home() {
     </main>
   );
 }
+

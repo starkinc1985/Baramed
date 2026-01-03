@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { instrumentTypeCategories } from "@/data/categories";
 import { getProductsByCategory } from "@/data/products";
-import Image from "next/image";
+import ProductCard from "@/components/Product/ProductCard";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export async function generateStaticParams() {
   const params: { slug: string; subslug: string }[] = [];
@@ -25,14 +26,15 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string; subslug: string };
+  params: Promise<{ slug: string; subslug: string }> | { slug: string; subslug: string };
 }): Promise<Metadata> {
+  const resolvedParams = params instanceof Promise ? await params : params;
   const category = instrumentTypeCategories.find(
-    (cat) => cat.slug === params.slug
+    (cat) => cat.slug === resolvedParams.slug
   );
   
   const subcategory = category?.subcategories?.find(
-    (subcat) => subcat.slug === params.subslug
+    (subcat) => subcat.slug === resolvedParams.subslug
   );
 
   if (!category || !subcategory) {
@@ -47,17 +49,18 @@ export async function generateMetadata({
   };
 }
 
-export default function SubcategoryPage({
+export default async function SubcategoryPage({
   params,
 }: {
-  params: { slug: string; subslug: string };
+  params: Promise<{ slug: string; subslug: string }> | { slug: string; subslug: string };
 }) {
+  const resolvedParams = params instanceof Promise ? await params : params;
   const category = instrumentTypeCategories.find(
-    (cat) => cat.slug === params.slug
+    (cat) => cat.slug === resolvedParams.slug
   );
   
   const subcategory = category?.subcategories?.find(
-    (subcat) => subcat.slug === params.subslug
+    (subcat) => subcat.slug === resolvedParams.subslug
   );
 
   if (!category || !subcategory) {
@@ -65,7 +68,7 @@ export default function SubcategoryPage({
   }
 
   // Get products that match this subcategory
-  const allProducts = getProductsByCategory(category.id);
+  const allProducts = getProductsByCategory(category.slug);
   const products = allProducts.filter(
     (product) => product.subcategory === subcategory.slug
   );
@@ -74,44 +77,15 @@ export default function SubcategoryPage({
     <main className="pt-20">
       <section className="bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900 py-20 lg:py-30">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-          <div className="mb-6">
-            <div className="mb-4 flex items-center gap-2 text-sm text-waterloo">
-              <Link
-                href="/products/by-instrument-type"
-                className="hover:text-primary"
-              >
-                Instrument Types
-              </Link>
-              <span>/</span>
-              <Link
-                href={`/products/by-instrument-type/${category.slug}`}
-                className="hover:text-primary"
-              >
-                {category.name}
-              </Link>
-              <span>/</span>
-              <span className="text-black dark:text-white">{subcategory.name}</span>
-            </div>
-            <Link
-              href={`/products/by-instrument-type/${category.slug}`}
-              className="inline-flex items-center gap-2 text-waterloo hover:text-primary"
-            >
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              Back to {category.name}
-            </Link>
-          </div>
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Products", href: "/products" },
+              { label: "Instrument Types", href: "/products/by-instrument-type" },
+              { label: category.name, href: `/products/by-instrument-type/${category.slug}` },
+              { label: subcategory.name },
+            ]}
+          />
           <div className="text-center">
             <h1 className="mb-5 text-3xl font-bold text-black dark:text-white xl:text-hero">
               {subcategory.name}
@@ -123,63 +97,74 @@ export default function SubcategoryPage({
         </div>
       </section>
 
-      <section className="py-20 lg:py-25">
-        <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-          <div className="mb-8 flex items-center justify-between">
-            <h2 className="text-2xl font-semibold text-black dark:text-white">
-              Products ({products.length})
-            </h2>
-            {/* Filters would go here */}
-          </div>
-
-          {products.length > 0 ? (
-            <div className="grid grid-cols-1 gap-7.5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10">
-              {products.map((product) => (
-                <Link
-                  key={product.id}
-                  href={`/products/${product.id}`}
-                  className="group rounded-lg border border-stroke bg-white p-6 shadow-1 transition-all hover:shadow-2 dark:border-strokedark dark:bg-blacksection"
-                >
-                  <div className="mb-4 aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
-                    {product.images[0] ? (
-                      <Image
-                        src={product.images[0]}
-                        alt={product.name}
-                        width={300}
-                        height={300}
-                        className="h-full w-full object-cover transition-transform group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="flex h-full items-center justify-center text-waterloo">
-                        No Image
-                      </div>
-                    )}
-                  </div>
-                  <h3 className="mb-2 font-semibold text-black dark:text-white">
-                    {product.name}
-                  </h3>
-                  <p className="mb-2 text-sm text-waterloo">
-                    Code: {product.productCode}
-                  </p>
-                  <p className="text-sm text-waterloo line-clamp-2">
-                    {product.shortDescription || product.description}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-lg border border-stroke bg-white p-12 text-center dark:border-strokedark dark:bg-blacksection">
-              <p className="text-waterloo">No products found in this subcategory.</p>
+      {products.length > 0 ? (
+        <section className="py-20 lg:py-25">
+          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+            <div className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-2xl font-semibold text-black dark:text-white">
+                  {subcategory.name} Products
+                </h2>
+                <p className="mt-1 text-sm text-waterloo">
+                  Showing {products.length} {products.length === 1 ? 'product' : 'products'}
+                </p>
+              </div>
               <Link
                 href={`/products/by-instrument-type/${category.slug}`}
-                className="mt-4 inline-block text-primary hover:underline"
+                className="inline-flex items-center gap-2 rounded-lg border border-stroke bg-white px-4 py-2 text-sm font-medium text-waterloo transition-colors hover:border-primary hover:text-primary dark:border-strokedark dark:bg-blacksection"
               >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                View all {category.name}
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 gap-7.5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-10">
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : (
+        <section className="py-20 lg:py-25">
+          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+            <div className="rounded-lg border border-stroke bg-white p-12 text-center dark:border-strokedark dark:bg-blacksection">
+              <p className="text-waterloo mb-4">No products found in this subcategory.</p>
+              <Link
+                href={`/products/by-instrument-type/${category.slug}`}
+                className="inline-flex items-center gap-2 text-primary hover:underline"
+              >
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
                 View all {category.name} products
               </Link>
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

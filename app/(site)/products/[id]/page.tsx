@@ -2,15 +2,19 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getProductById } from "@/data/products";
+import { getProductById, getProductsByCategory } from "@/data/products";
 import InquiryButton from "@/components/Product/InquiryButton";
+import Breadcrumb from "@/components/Breadcrumb";
+import ProductCard from "@/components/Product/ProductCard";
+import { instrumentTypeCategories } from "@/data/categories";
 
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }> | { id: string };
 }): Promise<Metadata> {
-  const product = getProductById(params.id);
+  const resolvedParams = params instanceof Promise ? await params : params;
+  const product = getProductById(resolvedParams.id);
 
   if (!product) {
     return {
@@ -24,42 +28,49 @@ export async function generateMetadata({
   };
 }
 
-export default function ProductDetailPage({
+export default async function ProductDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }> | { id: string };
 }) {
-  const product = getProductById(params.id);
+  const resolvedParams = params instanceof Promise ? await params : params;
+  const product = getProductById(resolvedParams.id);
 
   if (!product) {
     notFound();
   }
 
+  // Find category for breadcrumb and related products
+  const category = instrumentTypeCategories.find(
+    (cat) => cat.slug === product.category
+  );
+  
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "Products", href: "/products" },
+  ];
+
+  if (category) {
+    breadcrumbItems.push({
+      label: category.name,
+      href: `/products/by-instrument-type/${category.slug}`,
+    });
+  }
+
+  breadcrumbItems.push({ label: product.name });
+
+  // Get related products (same category, excluding current product)
+  const relatedProducts = category
+    ? getProductsByCategory(category.slug)
+        .filter((p) => p.id !== product.id)
+        .slice(0, 4)
+    : [];
+
   return (
     <main className="pt-20">
       <section className="py-20 lg:py-25">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-          <div className="mb-6">
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-2 text-waterloo hover:text-primary"
-            >
-              <svg
-                className="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              Back to Products
-            </Link>
-          </div>
+          <Breadcrumb items={breadcrumbItems} />
 
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
             {/* Product Images */}
@@ -177,6 +188,35 @@ export default function ProductDetailPage({
               <InquiryButton product={product} />
             </div>
           </div>
+
+          {/* Related Products */}
+          {relatedProducts.length > 0 && (
+            <div className="mt-16 pt-10 border-t border-stroke dark:border-strokedark">
+              <div className="mb-8 flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold text-black dark:text-white">
+                    Related Products
+                  </h2>
+                  <p className="mt-1 text-sm text-waterloo">
+                    More {category?.name.toLowerCase()} instruments
+                  </p>
+                </div>
+                {category && (
+                  <Link
+                    href={`/products/by-instrument-type/${category.slug}`}
+                    className="text-sm font-medium text-primary hover:underline"
+                  >
+                    View All {category.name} →
+                  </Link>
+                )}
+              </div>
+              <div className="grid grid-cols-1 gap-7.5 md:grid-cols-2 lg:grid-cols-4 xl:gap-10">
+                {relatedProducts.map((relatedProduct) => (
+                  <ProductCard key={relatedProduct.id} product={relatedProduct} />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </main>
