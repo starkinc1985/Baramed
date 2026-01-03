@@ -9,22 +9,22 @@ const BlogItem = ({ blog }: { blog: Blog }) => {
   return (
     <Link
       href={`/blog/blog-details`}
-      className="group mb-3 flex min-h-[80px] gap-3 rounded-lg border border-green-200 bg-white p-3 transition-all last:mb-0 hover:border-green-400 hover:shadow-sm dark:border-green-800 dark:bg-blacksection dark:hover:border-green-600"
+      className="group mb-4 flex min-h-[100px] gap-4 rounded-xl border-2 border-emerald-200 bg-white p-4 transition-all last:mb-0 hover:border-emerald-400 hover:shadow-lg hover:-translate-y-0.5 dark:border-emerald-800 dark:bg-slate-800 dark:hover:border-emerald-600"
     >
-      <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded bg-gray-100">
+      <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl border-2 border-emerald-100 bg-gradient-to-br from-emerald-50 to-emerald-100 dark:border-emerald-900 dark:from-emerald-950 dark:to-emerald-900">
         <Image
           src={mainImage}
           alt={title}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-110"
-          sizes="64px"
+          sizes="80px"
         />
       </div>
       <div className="flex min-w-0 flex-1 flex-col justify-center">
-        <h3 className="mb-1.5 line-clamp-2 text-sm font-bold leading-tight text-black transition-colors group-hover:text-green-700 dark:text-white dark:group-hover:text-green-400">
+        <h3 className="mb-2 line-clamp-2 text-base font-bold leading-tight text-slate-900 transition-colors group-hover:text-emerald-700 dark:text-white dark:group-hover:text-emerald-400">
           {title}
         </h3>
-        <p className="line-clamp-2 text-xs leading-relaxed text-waterloo">
+        <p className="line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
           {metadata}
         </p>
       </div>
