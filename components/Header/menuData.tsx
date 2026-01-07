@@ -98,12 +98,6 @@ const menuData: Menu[] = [
     newTab: false,
     path: "/downloads",
   },
-  {
-    id: 9,
-    title: "Contact",
-    newTab: false,
-    path: "/contact",
-  },
 ];
 
 export default menuData;

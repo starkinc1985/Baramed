@@ -92,7 +92,7 @@ export default function ChatBot() {
     <>
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-24 left-4 right-4 z-99 flex h-[500px] w-auto flex-col overflow-hidden rounded-lg border border-stroke bg-white shadow-solid-5 dark:border-strokedark dark:bg-blacksection md:left-8 md:right-auto md:w-[400px]">
+        <div className="fixed bottom-24 right-4 left-4 z-99 flex h-[500px] w-auto flex-col overflow-hidden rounded-lg border border-stroke bg-white shadow-solid-5 dark:border-strokedark dark:bg-blacksection md:left-auto md:right-8 md:w-[400px]">
           {/* Chat Header */}
           <div className="flex flex-shrink-0 items-center justify-between rounded-t-lg bg-primary px-4 py-3">
             <div className="flex items-center gap-3">
@@ -185,10 +185,10 @@ export default function ChatBot() {
       )}
 
       {/* Chat Button */}
-      <div className="fixed bottom-8 left-4 right-4 z-99 md:left-8 md:right-auto md:w-auto">
+      <div className="fixed bottom-8 right-4 z-99 md:right-8">
         <button
           onClick={toggleChat}
-          className={`ml-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-solid-5 transition-all duration-300 hover:bg-primaryho hover:shadow-solid-7 md:ml-0 ${
+          className={`flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-solid-5 transition-all duration-300 hover:bg-primaryho hover:shadow-solid-7 ${
             isOpen ? "rotate-180" : ""
           }`}
           aria-label={isOpen ? "Close chat" : "Open chat"}

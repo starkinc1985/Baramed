@@ -12,7 +12,7 @@ const Hero = () => {
           alt="Surgical Instruments Background"
           fill
           priority
-          className="object-cover opacity-20 dark:opacity-10"
+          className="object-cover opacity-70 dark:opacity-60"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-white/90 via-white/80 to-transparent dark:from-slate-900/90 dark:via-slate-900/80"></div>
       </div>
