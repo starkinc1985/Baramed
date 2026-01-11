@@ -45,7 +45,7 @@ export default async function ProductDetailPage({
     (cat) => cat.slug === product.category
   );
   
-  const breadcrumbItems = [
+  const breadcrumbItems: Array<{ label: string; href?: string }> = [
     { label: "Home", href: "/" },
     { label: "Products", href: "/products" },
   ];
