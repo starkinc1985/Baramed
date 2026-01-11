@@ -9,22 +9,10 @@ import menuData from "./menuData";
 
 const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
-  const [dropdownToggler, setDropdownToggler] = useState<Record<number, boolean>>({});
+  const [dropdownToggler, setDropdownToggler] = useState(false);
   const [stickyMenu, setStickyMenu] = useState(false);
 
   const pathUrl = usePathname();
-
-  const toggleDropdown = (id: number) => {
-    setDropdownToggler((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
-  const closeMobileMenu = () => {
-    setNavigationOpen(false);
-    setDropdownToggler({});
-  };
 
   // Sticky menu
   const handleStickyMenu = () => {
@@ -114,35 +102,9 @@ const Header = () => {
                 <li key={key} className={`${menuItem.submenu ? "group relative" : ""} flex-shrink-0`}>
                   {menuItem.submenu ? (
                     <>
-                      {/* Mobile: Clickable button with dropdown toggle */}
-                      <div className="xl:hidden flex w-full items-center justify-between">
-                        <Link 
-                          href={menuItem.path || "#"}
-                          onClick={closeMobileMenu}
-                          className="flex-1 text-sm font-medium text-black transition-colors hover:text-primary dark:text-white"
-                        >
-                          {menuItem.title}
-                        </Link>
-                        <button
-                          type="button"
-                          onClick={() => toggleDropdown(menuItem.id)}
-                          className="flex-shrink-0 p-1"
-                          aria-label="Toggle dropdown"
-                        >
-                          <svg
-                            className={`h-4 w-4 fill-waterloo transition-transform ${dropdownToggler[menuItem.id] ? "rotate-180" : ""}`}
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512"
-                          >
-                            <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                          </svg>
-                        </button>
-                      </div>
-
-                      {/* Desktop: Hoverable link */}
-                      <Link
-                        href={menuItem.path || "#"}
-                        className="hidden xl:flex group/link cursor-pointer items-center gap-1.5 whitespace-nowrap text-sm font-medium text-black transition-colors hover:text-primary dark:text-white xl:text-regular"
+                      <button
+                        onClick={() => setDropdownToggler(!dropdownToggler)}
+                        className="flex cursor-pointer items-center gap-1.5 whitespace-nowrap text-sm font-medium text-black transition-colors hover:text-primary dark:text-white xl:text-regular"
                       >
                         {menuItem.title}
                         <span className="flex-shrink-0">
@@ -154,48 +116,14 @@ const Header = () => {
                             <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
                           </svg>
                         </span>
-                      </Link>
+                      </button>
 
-                      {/* Dropdown Menu */}
                       <ul
-                        className={`${
-                          dropdownToggler[menuItem.id] ? "block" : "hidden"
-                        } dropdown xl:w-auto xl:min-w-[700px] xl:max-w-[900px] xl:grid xl:grid-cols-3 xl:gap-8 xl:px-10 xl:py-8`}
+                        className={`dropdown ${dropdownToggler ? "flex" : ""}`}
                       >
-                        {menuItem.submenu.map((item, subKey) => (
-                          <li key={subKey} className="mb-4 last:mb-0 xl:mb-4">
-                            {item.submenu ? (
-                              <div>
-                                <Link
-                                  href={item.path || "#"}
-                                  onClick={closeMobileMenu}
-                                  className="mb-3 block text-sm font-bold text-black transition-colors hover:text-primary dark:text-white"
-                                >
-                                  {item.title}
-                                </Link>
-                                <ul className="space-y-2 pl-0 xl:pl-0">
-                                  {item.submenu.map((subItem, subSubKey) => (
-                                    <li key={subSubKey}>
-                                      <Link
-                                        href={subItem.path || "#"}
-                                        onClick={closeMobileMenu}
-                                        className="block py-1 text-sm text-waterloo transition-colors hover:text-primary dark:text-manatee"
-                                      >
-                                        {subItem.title}
-                                      </Link>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ) : (
-                              <Link 
-                                href={item.path || "#"}
-                                onClick={closeMobileMenu}
-                                className="block py-1 text-sm font-semibold text-black transition-colors hover:text-primary dark:text-white"
-                              >
-                                {item.title}
-                              </Link>
-                            )}
+                        {menuItem.submenu.map((item, key) => (
+                          <li key={key} className="hover:text-primary">
+                            <Link href={item.path || "#"}>{item.title}</Link>
                           </li>
                         ))}
                       </ul>
@@ -203,7 +131,6 @@ const Header = () => {
                   ) : (
                     <Link
                       href={`${menuItem.path}`}
-                      onClick={closeMobileMenu}
                       className={`whitespace-nowrap text-sm font-medium transition-colors xl:text-regular ${
                         pathUrl === menuItem.path
                           ? "text-primary hover:text-primary"

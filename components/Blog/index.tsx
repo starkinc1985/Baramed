@@ -11,12 +11,9 @@ const Blog = () => {
       ))}
       <Link
         href="/blog"
-        className="mt-4 flex w-full items-center justify-center rounded-xl border-2 border-emerald-200 bg-white px-5 py-3 text-sm font-semibold text-emerald-700 transition-all hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-800 hover:shadow-md dark:border-emerald-800 dark:bg-slate-800 dark:text-emerald-400 dark:hover:border-emerald-600 dark:hover:bg-emerald-950/30"
+        className="mt-3 flex w-full items-center justify-center rounded-lg border border-green-200 bg-white px-4 py-2.5 text-sm font-medium text-green-700 transition-all hover:border-green-400 hover:bg-green-50 hover:text-green-800 dark:border-green-800 dark:bg-blacksection dark:text-green-400 dark:hover:border-green-600 dark:hover:bg-green-950/30"
       >
         See All
-        <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-        </svg>
       </Link>
     </div>
   );
