@@ -2,11 +2,23 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+<<<<<<< HEAD
 import { getProductById, getProductsByCategory } from "@/data/products";
 import InquiryButton from "@/components/Product/InquiryButton";
 import Breadcrumb from "@/components/Breadcrumb";
 import ProductCard from "@/components/Product/ProductCard";
 import { instrumentTypeCategories } from "@/data/categories";
+=======
+import InquiryButton from "@/components/Product/InquiryButton";
+import Breadcrumb from "@/components/Breadcrumb";
+import ProductCard from "@/components/Product/ProductCard";
+import { DEFAULT_COMPLIANCE } from "@/lib/staticCompliance";
+import {
+  findInstrumentCategoryBySlug,
+  getProductUiById,
+  getRelatedProducts,
+} from "@/lib/catalog";
+>>>>>>> 6f7bc4d (Moiz db commit)
 
 export async function generateMetadata({
   params,
@@ -14,7 +26,11 @@ export async function generateMetadata({
   params: Promise<{ id: string }> | { id: string };
 }): Promise<Metadata> {
   const resolvedParams = params instanceof Promise ? await params : params;
+<<<<<<< HEAD
   const product = getProductById(resolvedParams.id);
+=======
+  const product = await getProductUiById(resolvedParams.id);
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   if (!product) {
     return {
@@ -34,16 +50,26 @@ export default async function ProductDetailPage({
   params: Promise<{ id: string }> | { id: string };
 }) {
   const resolvedParams = params instanceof Promise ? await params : params;
+<<<<<<< HEAD
   const product = getProductById(resolvedParams.id);
+=======
+  const product = await getProductUiById(resolvedParams.id);
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   if (!product) {
     notFound();
   }
 
   // Find category for breadcrumb and related products
+<<<<<<< HEAD
   const category = instrumentTypeCategories.find(
     (cat) => cat.slug === product.category
   );
+=======
+  const category = product.category
+    ? await findInstrumentCategoryBySlug(product.category)
+    : null;
+>>>>>>> 6f7bc4d (Moiz db commit)
   
   const breadcrumbItems: Array<{ label: string; href?: string }> = [
     { label: "Home", href: "/" },
@@ -60,11 +86,20 @@ export default async function ProductDetailPage({
   breadcrumbItems.push({ label: product.name });
 
   // Get related products (same category, excluding current product)
+<<<<<<< HEAD
   const relatedProducts = category
     ? getProductsByCategory(category.slug)
         .filter((p) => p.id !== product.id)
         .slice(0, 4)
     : [];
+=======
+  const relatedProducts =
+    product.category
+      ? await getRelatedProducts(product.id, product.category, 4)
+      : [];
+
+  const compliance = { ...DEFAULT_COMPLIANCE, ...product.compliance };
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   return (
     <main className="pt-20">
@@ -151,6 +186,7 @@ export default async function ProductDetailPage({
               )}
 
               {/* Compliance */}
+<<<<<<< HEAD
               {Object.keys(product.compliance).length > 0 && (
                 <div className="mb-6 rounded-lg border border-stroke bg-white p-6 dark:border-strokedark dark:bg-blacksection">
                   <h2 className="mb-4 text-xl font-semibold text-black dark:text-white">
@@ -183,6 +219,38 @@ export default async function ProductDetailPage({
                   </div>
                 </div>
               )}
+=======
+              <div className="mb-6 rounded-lg border border-stroke bg-white p-6 dark:border-strokedark dark:bg-blacksection">
+                <h2 className="mb-4 text-xl font-semibold text-black dark:text-white">
+                  Compliance & Certifications
+                </h2>
+                <div className="flex flex-wrap gap-2">
+                  {compliance.iso?.map((iso) => (
+                    <span
+                      key={iso}
+                      className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
+                    >
+                      {iso}
+                    </span>
+                  ))}
+                  {compliance.ce && (
+                    <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+                      CE Marked
+                    </span>
+                  )}
+                  {compliance.mdr && (
+                    <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+                      MDR Compliant
+                    </span>
+                  )}
+                  {compliance.fda && (
+                    <span className="rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+                      FDA Approved
+                    </span>
+                  )}
+                </div>
+              </div>
+>>>>>>> 6f7bc4d (Moiz db commit)
 
               {/* Inquiry Button */}
               <InquiryButton product={product} />

@@ -1,9 +1,18 @@
 import { Metadata } from "next";
 import Link from "next/link";
+<<<<<<< HEAD
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { surgeryTypeCategories } from "@/data/categories";
 import { getProductsBySurgeryType } from "@/data/products";
+=======
+import { notFound } from "next/navigation";
+import {
+  findSurgeryCategoryBySlug,
+  getProductsBySurgeryParentSlug,
+  getStaticSurgerySlugs,
+} from "@/lib/catalog";
+>>>>>>> 6f7bc4d (Moiz db commit)
 import ProductCard from "@/components/Product/ProductCard";
 import Breadcrumb from "@/components/Breadcrumb";
 
@@ -48,6 +57,7 @@ const getInstrumentTypeSlug = (surgerySubcategorySlug: string): string => {
   return instrumentTypeSlugMap[surgerySubcategorySlug] || surgerySubcategorySlug.replace(/^(gs-|os-|ent-|ps-|ns-|go-|cs-|ds-|us-|ts-)/, '');
 };
 
+<<<<<<< HEAD
 // Helper function to get placeholder image
 function getPlaceholderImage(categorySlug: string): string {
   const imageMap: Record<string, string> = {
@@ -64,6 +74,10 @@ export async function generateStaticParams() {
   return surgeryTypeCategories.map((category) => ({
     slug: category.slug,
   }));
+=======
+export async function generateStaticParams() {
+  return getStaticSurgerySlugs();
+>>>>>>> 6f7bc4d (Moiz db commit)
 }
 
 export async function generateMetadata({
@@ -72,9 +86,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }> | { slug: string };
 }): Promise<Metadata> {
   const resolvedParams = params instanceof Promise ? await params : params;
+<<<<<<< HEAD
   const category = surgeryTypeCategories.find(
     (cat) => cat.slug === resolvedParams.slug
   );
+=======
+  const category = await findSurgeryCategoryBySlug(resolvedParams.slug);
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   if (!category) {
     return {
@@ -94,15 +112,23 @@ export default async function SurgeryTypeDetailPage({
   params: Promise<{ slug: string }> | { slug: string };
 }) {
   const resolvedParams = params instanceof Promise ? await params : params;
+<<<<<<< HEAD
   const category = surgeryTypeCategories.find(
     (cat) => cat.slug === resolvedParams.slug
   );
+=======
+  const category = await findSurgeryCategoryBySlug(resolvedParams.slug);
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   if (!category) {
     notFound();
   }
 
+<<<<<<< HEAD
   const products = getProductsBySurgeryType(category.slug);
+=======
+  const products = await getProductsBySurgeryParentSlug(category.slug);
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   return (
     <main className="pt-20">
@@ -146,7 +172,10 @@ export default async function SurgeryTypeDetailPage({
                 const subcatProducts = products.filter((p) => {
                   return p.category === instrumentTypeSlug;
                 });
+<<<<<<< HEAD
                 const subcatImage = getPlaceholderImage(instrumentTypeSlug);
+=======
+>>>>>>> 6f7bc4d (Moiz db commit)
 
                 return (
                   <Link

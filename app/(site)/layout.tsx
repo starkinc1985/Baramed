@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Inter } from "next/font/google";
 import "../globals.css";
 import type { Metadata } from "next";
@@ -14,10 +15,20 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+=======
+import Proivder from "./Provider";
+
+/**
+ * Public site shell (header, footer, theme). Routes outside `app/(site)/` (e.g. /admin) use
+ * only the root `app/layout.tsx` without this wrapper.
+ */
+export default function SiteLayout({
+>>>>>>> 6f7bc4d (Moiz db commit)
   children,
 }: {
   children: React.ReactNode;
 }) {
+<<<<<<< HEAD
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`dark:bg-black ${inter.className}`}>
@@ -25,4 +36,7 @@ export default function RootLayout({
       </body>
     </html>
   );
+=======
+  return <Proivder>{children}</Proivder>;
+>>>>>>> 6f7bc4d (Moiz db commit)
 }

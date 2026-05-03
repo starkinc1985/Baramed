@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+<<<<<<< HEAD
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { instrumentTypeCategories } from "@/data/categories";
@@ -23,6 +24,19 @@ export async function generateStaticParams() {
   return instrumentTypeCategories.map((category) => ({
     slug: category.slug,
   }));
+=======
+import { notFound } from "next/navigation";
+import {
+  findInstrumentCategoryBySlug,
+  getProductsByInstrumentParentSlug,
+  getStaticInstrumentSlugs,
+} from "@/lib/catalog";
+import ProductCard from "@/components/Product/ProductCard";
+import Breadcrumb from "@/components/Breadcrumb";
+
+export async function generateStaticParams() {
+  return getStaticInstrumentSlugs();
+>>>>>>> 6f7bc4d (Moiz db commit)
 }
 
 export async function generateMetadata({
@@ -31,9 +45,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }> | { slug: string };
 }): Promise<Metadata> {
   const resolvedParams = params instanceof Promise ? await params : params;
+<<<<<<< HEAD
   const category = instrumentTypeCategories.find(
     (cat) => cat.slug === resolvedParams.slug
   );
+=======
+  const category = await findInstrumentCategoryBySlug(resolvedParams.slug);
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   if (!category) {
     return {
@@ -53,15 +71,23 @@ export default async function CategoryDetailPage({
   params: Promise<{ slug: string }> | { slug: string };
 }) {
   const resolvedParams = params instanceof Promise ? await params : params;
+<<<<<<< HEAD
   const category = instrumentTypeCategories.find(
     (cat) => cat.slug === resolvedParams.slug
   );
+=======
+  const category = await findInstrumentCategoryBySlug(resolvedParams.slug);
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   if (!category) {
     notFound();
   }
 
+<<<<<<< HEAD
   const products = getProductsByCategory(category.slug);
+=======
+  const products = await getProductsByInstrumentParentSlug(category.slug);
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   return (
     <main className="pt-20">
@@ -104,10 +130,13 @@ export default async function CategoryDetailPage({
                 const subcatProducts = products.filter(
                   (p) => p.subcategory === subcat.slug
                 );
+<<<<<<< HEAD
                 // Get a sample product image for the subcategory
                 const sampleProduct = subcatProducts[0];
                 const subcatImage = sampleProduct?.images[0] || getPlaceholderImage(category.slug);
                 
+=======
+>>>>>>> 6f7bc4d (Moiz db commit)
                 return (
                   <Link
                     key={subcat.id}

@@ -1,6 +1,10 @@
 import { Metadata } from "next";
 import Link from "next/link";
+<<<<<<< HEAD
 import { surgeryTypeCategories } from "@/data/categories";
+=======
+import { getSurgeryTypeCategoriesFromDb } from "@/lib/catalog";
+>>>>>>> 6f7bc4d (Moiz db commit)
 import CategoryCard from "@/components/Category/CategoryCard";
 import Breadcrumb from "@/components/Breadcrumb";
 
@@ -9,7 +13,12 @@ export const metadata: Metadata = {
   description: "Browse surgical instruments organized by surgical specialty",
 };
 
+<<<<<<< HEAD
 export default function SurgeryTypePage() {
+=======
+export default async function SurgeryTypePage() {
+  const surgeryTypeCategories = await getSurgeryTypeCategoriesFromDb();
+>>>>>>> 6f7bc4d (Moiz db commit)
   return (
     <main className="pt-20">
       <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">

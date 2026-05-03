@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16
+    container_name: baramed_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: baramed
+      POSTGRES_PASSWORD: baramed
+      POSTGRES_DB: baramed
+    ports:
+      - "5433:5432"
+    volumes:
+      - baramed_pgdata:/var/lib/postgresql/data
+
+volumes:
+  baramed_pgdata:
+

@@ -2,8 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+<<<<<<< HEAD
 import { searchProducts } from "@/data/products";
 import { Product } from "@/types/product";
+=======
+import { Product } from "@/types/product";
+import { mapPrismaProductToUiProduct } from "@/lib/mappers/product";
+>>>>>>> 6f7bc4d (Moiz db commit)
 
 interface SearchProps {
   onClose?: () => void;
@@ -16,6 +21,7 @@ export default function Search({ onClose }: SearchProps) {
   const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+<<<<<<< HEAD
     if (query.length >= 2) {
       const searchResults = searchProducts(query);
       setResults(searchResults.slice(0, 8)); // Limit to 8 results
@@ -24,6 +30,47 @@ export default function Search({ onClose }: SearchProps) {
       setResults([]);
       setIsOpen(false);
     }
+=======
+    let cancelled = false;
+
+    async function run() {
+      if (query.length < 2) {
+        setResults([]);
+        setIsOpen(false);
+        return;
+      }
+
+      const res = await fetch(
+        `/api/products?q=${encodeURIComponent(query)}&take=8`,
+        { method: "GET" },
+      );
+      if (!res.ok) {
+        if (!cancelled) {
+          setResults([]);
+          setIsOpen(true);
+        }
+        return;
+      }
+      const data = await res.json();
+      const mapped: Product[] = (data.products ?? []).map((p: any) =>
+        mapPrismaProductToUiProduct(p),
+      );
+      if (cancelled) return;
+      setResults(mapped);
+      setIsOpen(true);
+    }
+
+    run().catch(() => {
+      if (!cancelled) {
+        setResults([]);
+        setIsOpen(true);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+>>>>>>> 6f7bc4d (Moiz db commit)
   }, [query]);
 
   useEffect(() => {

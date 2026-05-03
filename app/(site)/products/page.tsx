@@ -1,7 +1,16 @@
 import { Metadata } from "next";
 import Link from "next/link";
+<<<<<<< HEAD
 import { instrumentTypeCategories, surgeryTypeCategories } from "@/data/categories";
 import { getFeaturedProducts, sampleProducts } from "@/data/products";
+=======
+import {
+  getAllProductsForCatalogPage,
+  getFeaturedProductsFromDb,
+  getInstrumentTypeCategoriesFromDb,
+  getSurgeryTypeCategoriesFromDb,
+} from "@/lib/catalog";
+>>>>>>> 6f7bc4d (Moiz db commit)
 import ProductCard from "@/components/Product/ProductCard";
 import Breadcrumb from "@/components/Breadcrumb";
 
@@ -10,12 +19,27 @@ export const metadata: Metadata = {
   description: "Browse our comprehensive catalog of surgical instruments organized by instrument type and surgery type",
 };
 
+<<<<<<< HEAD
 export default function ProductsPage() {
   const featuredProducts = getFeaturedProducts();
   // Show first 8 products if no featured products, or show featured + some regular products
   const displayProducts = featuredProducts.length > 0 
     ? featuredProducts 
     : sampleProducts.slice(0, 8);
+=======
+export default async function ProductsPage() {
+  const [instrumentTypeCategories, surgeryTypeCategories, featuredProducts, all] =
+    await Promise.all([
+      getInstrumentTypeCategoriesFromDb(),
+      getSurgeryTypeCategoriesFromDb(),
+      getFeaturedProductsFromDb(50),
+      getAllProductsForCatalogPage(),
+    ]);
+
+  // Show featured products; if none are featured in DB, fall back to the first 8 from the catalog.
+  const displayProducts =
+    featuredProducts.length > 0 ? featuredProducts : all.slice(0, 8);
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   return (
     <main className="pt-20">
@@ -196,7 +220,11 @@ export default function ProductsPage() {
               ))}
             </div>
             
+<<<<<<< HEAD
             {displayProducts.length < sampleProducts.length && (
+=======
+            {displayProducts.length < all.length && (
+>>>>>>> 6f7bc4d (Moiz db commit)
               <div className="mt-4 text-center">
                 <Link
                   href="/products/by-instrument-type"

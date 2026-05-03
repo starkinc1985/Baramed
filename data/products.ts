@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ﻿import { Product } from "@/types/product";
+=======
+import { Product } from "@/types/product";
+>>>>>>> 6f7bc4d (Moiz db commit)
 
 // Sample products - In production, this would come from a CMS or database
 export const sampleProducts: Product[] = [
@@ -133,6 +137,7 @@ export const sampleProducts: Product[] = [
     inStock: true,
     tags: ["retractor", "abdominal", "self-retaining"],
   },
+<<<<<<< HEAD
   // Additional Scissors
   {
     id: "prod-006",
@@ -1318,6 +1323,8 @@ export const sampleProducts: Product[] = [
     inStock: true,
     tags: ["basket", "wire-mesh", "sterilization"],
   },
+=======
+>>>>>>> 6f7bc4d (Moiz db commit)
 ];
 
 // Helper functions
@@ -1329,7 +1336,11 @@ export function getProductsByCategory(categoryId: string): Product[] {
 
 export function getProductsBySurgeryType(surgeryType: string): Product[] {
   return sampleProducts.filter((product) =>
+<<<<<<< HEAD
     product.surgeryTypes.includes(surgeryType)
+=======
+    product.surgeryTypes?.includes(surgeryType) ?? false,
+>>>>>>> 6f7bc4d (Moiz db commit)
   );
 }
 

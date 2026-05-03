@@ -75,7 +75,15 @@ export const instrumentTypeCategories: InstrumentTypeCategory[] = [
       { id: "bone-rongeurs", name: "Bone Rongeurs", slug: "bone-rongeurs" },
       { id: "bone-cutters", name: "Bone Cutters", slug: "bone-cutters" },
       { id: "bone-holders", name: "Bone Holders", slug: "bone-holders" },
+<<<<<<< HEAD
       { id: "periosteal-elevators", name: "Periosteal Elevators", slug: "periosteal-elevators" },
+=======
+      {
+        id: "rongeurs-periosteal-elevators",
+        name: "Periosteal Elevators",
+        slug: "rongeurs-periosteal-elevators",
+      },
+>>>>>>> 6f7bc4d (Moiz db commit)
     ],
   },
   {

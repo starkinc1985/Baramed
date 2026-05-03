@@ -1,12 +1,21 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+<<<<<<< HEAD
 import { instrumentTypeCategories } from "@/data/categories";
 import { getProductsByCategory } from "@/data/products";
+=======
+import {
+  findInstrumentCategoryBySlug,
+  getProductsByInstrumentParentAndSubSlug,
+  getStaticInstrumentSubslugs,
+} from "@/lib/catalog";
+>>>>>>> 6f7bc4d (Moiz db commit)
 import ProductCard from "@/components/Product/ProductCard";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export async function generateStaticParams() {
+<<<<<<< HEAD
   const params: { slug: string; subslug: string }[] = [];
   
   instrumentTypeCategories.forEach((category) => {
@@ -21,6 +30,9 @@ export async function generateStaticParams() {
   });
   
   return params;
+=======
+  return getStaticInstrumentSubslugs();
+>>>>>>> 6f7bc4d (Moiz db commit)
 }
 
 export async function generateMetadata({
@@ -29,9 +41,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string; subslug: string }> | { slug: string; subslug: string };
 }): Promise<Metadata> {
   const resolvedParams = params instanceof Promise ? await params : params;
+<<<<<<< HEAD
   const category = instrumentTypeCategories.find(
     (cat) => cat.slug === resolvedParams.slug
   );
+=======
+  const category = await findInstrumentCategoryBySlug(resolvedParams.slug);
+>>>>>>> 6f7bc4d (Moiz db commit)
   
   const subcategory = category?.subcategories?.find(
     (subcat) => subcat.slug === resolvedParams.subslug
@@ -55,9 +71,13 @@ export default async function SubcategoryPage({
   params: Promise<{ slug: string; subslug: string }> | { slug: string; subslug: string };
 }) {
   const resolvedParams = params instanceof Promise ? await params : params;
+<<<<<<< HEAD
   const category = instrumentTypeCategories.find(
     (cat) => cat.slug === resolvedParams.slug
   );
+=======
+  const category = await findInstrumentCategoryBySlug(resolvedParams.slug);
+>>>>>>> 6f7bc4d (Moiz db commit)
   
   const subcategory = category?.subcategories?.find(
     (subcat) => subcat.slug === resolvedParams.subslug
@@ -67,10 +87,16 @@ export default async function SubcategoryPage({
     notFound();
   }
 
+<<<<<<< HEAD
   // Get products that match this subcategory
   const allProducts = getProductsByCategory(category.slug);
   const products = allProducts.filter(
     (product) => product.subcategory === subcategory.slug
+=======
+  const products = await getProductsByInstrumentParentAndSubSlug(
+    category.slug,
+    subcategory.slug,
+>>>>>>> 6f7bc4d (Moiz db commit)
   );
 
   return (

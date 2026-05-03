@@ -7,7 +7,11 @@ import YouTubeVideos from "@/components/YouTubeVideos";
 import CTA from "@/components/CTA";
 import FAQ from "@/components/FAQ";
 import Blog from "@/components/Blog";
+<<<<<<< HEAD
 import { getFeaturedProducts } from "@/data/products";
+=======
+import { getFeaturedProductsFromDb } from "@/lib/catalog";
+>>>>>>> 6f7bc4d (Moiz db commit)
 import Link from "next/link";
 import ProductCard from "@/components/Product/ProductCard";
 
@@ -16,8 +20,13 @@ export const metadata: Metadata = {
   description: "Leading German manufacturer of high-quality surgical instruments. ISO 13485 certified, CE marked, and MDR compliant.",
 };
 
+<<<<<<< HEAD
 export default function Home() {
   const featuredProducts = getFeaturedProducts();
+=======
+export default async function Home() {
+  const featuredProducts = await getFeaturedProductsFromDb(4);
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   return (
     <main>

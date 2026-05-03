@@ -4,6 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/types/product";
 import { useState } from "react";
+<<<<<<< HEAD
+=======
+import { DEFAULT_COMPLIANCE } from "@/lib/staticCompliance";
+>>>>>>> 6f7bc4d (Moiz db commit)
 
 interface ProductCardProps {
   product: Product;
@@ -34,9 +38,16 @@ function getPlaceholderImage(category: string): string {
 
 export default function ProductCard({ product, className = "" }: ProductCardProps) {
   const [imageError, setImageError] = useState(false);
+<<<<<<< HEAD
   const imageUrl = product.images[0] && !imageError 
     ? product.images[0] 
     : getPlaceholderImage(product.category);
+=======
+  const compliance = { ...DEFAULT_COMPLIANCE, ...product.compliance };
+  const imageUrl = product.images[0] && !imageError 
+    ? product.images[0] 
+    : getPlaceholderImage(product.category ?? "scissors");
+>>>>>>> 6f7bc4d (Moiz db commit)
 
   return (
     <Link
@@ -86,9 +97,15 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
         </p>
         
         {/* Compliance Badges */}
+<<<<<<< HEAD
         {(product.compliance.ce || product.compliance.mdr) && (
           <div className="mt-auto flex flex-wrap gap-2">
             {product.compliance.ce && (
+=======
+        {(compliance.ce || compliance.mdr) && (
+          <div className="mt-auto flex flex-wrap gap-2">
+            {compliance.ce && (
+>>>>>>> 6f7bc4d (Moiz db commit)
               <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800 dark:bg-blue-900/40 dark:text-blue-200">
                 <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -96,7 +113,11 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
                 CE
               </span>
             )}
+<<<<<<< HEAD
             {product.compliance.mdr && (
+=======
+            {compliance.mdr && (
+>>>>>>> 6f7bc4d (Moiz db commit)
               <span className="inline-flex items-center gap-1 rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800 dark:bg-green-900/40 dark:text-green-200">
                 <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
