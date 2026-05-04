@@ -7,31 +7,30 @@ import YouTubeVideos from "@/components/YouTubeVideos";
 import CTA from "@/components/CTA";
 import FAQ from "@/components/FAQ";
 import Blog from "@/components/Blog";
-<<<<<<< HEAD
-import { getFeaturedProducts } from "@/data/products";
-=======
 import { getFeaturedProductsFromDb } from "@/lib/catalog";
->>>>>>> 6f7bc4d (Moiz db commit)
+import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import ProductCard from "@/components/Product/ProductCard";
 
 export const metadata: Metadata = {
   title: "BÄRAMED INSTRUMENTE GMBH - Premium Surgical Instruments",
-  description: "Leading German manufacturer of high-quality surgical instruments. ISO 13485 certified, CE marked, and MDR compliant.",
+  description:
+    "Leading German manufacturer of high-quality surgical instruments. ISO 13485 certified, CE marked, and MDR compliant.",
 };
 
-<<<<<<< HEAD
-export default function Home() {
-  const featuredProducts = getFeaturedProducts();
-=======
 export default async function Home() {
-  const featuredProducts = await getFeaturedProductsFromDb(4);
->>>>>>> 6f7bc4d (Moiz db commit)
+  const [featuredProducts, faqs] = await Promise.all([
+    getFeaturedProductsFromDb(4),
+    prisma.faq.findMany({
+      where: { published: true },
+      orderBy: { sortOrder: "asc" },
+    }),
+  ]);
 
   return (
     <main>
       <Hero />
-      
+
       {/* Quick Navigation to Categories */}
       <section className="border-b border-stroke bg-gray-50 py-6 dark:border-strokedark dark:bg-blacksection">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
@@ -52,12 +51,23 @@ export default async function Home() {
                 By Instrument Type
               </h3>
               <p className="mb-3 text-sm text-waterloo">
-                Browse by instrument category: Scissors, Forceps, Retractors, and more
+                Browse by instrument category: Scissors, Forceps, Retractors,
+                and more
               </p>
               <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary">
                 View Categories
-                <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </span>
             </Link>
@@ -69,12 +79,23 @@ export default async function Home() {
                 By Surgery Type
               </h3>
               <p className="mb-3 text-sm text-waterloo">
-                Browse by surgical specialty: General, Orthopedic, ENT, Neurosurgery, and more
+                Browse by surgical specialty: General, Orthopedic, ENT,
+                Neurosurgery, and more
               </p>
               <span className="inline-flex items-center gap-1.5 text-sm font-medium text-primary">
                 View Categories
-                <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </span>
             </Link>
@@ -105,8 +126,18 @@ export default async function Home() {
                 className="inline-flex items-center gap-1.5 rounded border border-primary bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primaryho"
               >
                 View All Products
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
                 </svg>
               </Link>
             </div>
@@ -118,7 +149,7 @@ export default async function Home() {
       <Certifications />
       <YouTubeVideos />
       <Feature />
-      
+
       {/* FAQ and News Side by Side */}
       <section className="border-b border-stroke bg-gray-50 py-8 dark:border-strokedark dark:bg-blacksection">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
@@ -129,21 +160,25 @@ export default async function Home() {
                 Frequently Asked Questions
               </h2>
               <div className="flex-1">
-                <FAQ />
+                <FAQ faqs={faqs} />
               </div>
             </div>
-            
+
             {/* News Section */}
             <div className="flex flex-col">
               <div className="mb-6 flex items-center justify-between">
                 <h2 className="text-2xl font-bold text-black dark:text-white lg:text-3xl">
                   News
                 </h2>
-                <button 
+                <button
                   className="flex h-8 w-8 items-center justify-center rounded-full bg-green-600 text-white transition-colors hover:bg-green-700"
                   aria-label="RSS Feed"
                 >
-                  <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                  <svg
+                    className="h-4 w-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
@@ -156,9 +191,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
-      
+
       <CTA />
     </main>
   );
 }
-

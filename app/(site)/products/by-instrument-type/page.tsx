@@ -1,10 +1,5 @@
 import { Metadata } from "next";
-import Link from "next/link";
-<<<<<<< HEAD
-import { instrumentTypeCategories } from "@/data/categories";
-=======
 import { getInstrumentTypeCategoriesFromDb } from "@/lib/catalog";
->>>>>>> 6f7bc4d (Moiz db commit)
 import CategoryCard from "@/components/Category/CategoryCard";
 import Breadcrumb from "@/components/Breadcrumb";
 
@@ -13,12 +8,8 @@ export const metadata: Metadata = {
   description: "Browse surgical instruments organized by instrument type",
 };
 
-<<<<<<< HEAD
-export default function InstrumentTypePage() {
-=======
 export default async function InstrumentTypePage() {
   const instrumentTypeCategories = await getInstrumentTypeCategoriesFromDb();
->>>>>>> 6f7bc4d (Moiz db commit)
   return (
     <main className="pt-20">
       <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
@@ -58,4 +49,3 @@ export default async function InstrumentTypePage() {
     </main>
   );
 }
-

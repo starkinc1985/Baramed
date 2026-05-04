@@ -1,22 +1,14 @@
 import { Metadata } from "next";
 import Link from "next/link";
-<<<<<<< HEAD
-import Image from "next/image";
-import { notFound } from "next/navigation";
-import { surgeryTypeCategories } from "@/data/categories";
-import { getProductsBySurgeryType } from "@/data/products";
-=======
 import { notFound } from "next/navigation";
 import {
   findSurgeryCategoryBySlug,
   getProductsBySurgeryParentSlug,
   getStaticSurgerySlugs,
 } from "@/lib/catalog";
->>>>>>> 6f7bc4d (Moiz db commit)
 import ProductCard from "@/components/Product/ProductCard";
 import Breadcrumb from "@/components/Breadcrumb";
 
-// Helper function to map surgery type subcategory slug to instrument type category slug
 const getInstrumentTypeSlug = (surgerySubcategorySlug: string): string => {
   const instrumentTypeSlugMap: Record<string, string> = {
     "gs-scissors": "scissors",
@@ -57,27 +49,8 @@ const getInstrumentTypeSlug = (surgerySubcategorySlug: string): string => {
   return instrumentTypeSlugMap[surgerySubcategorySlug] || surgerySubcategorySlug.replace(/^(gs-|os-|ent-|ps-|ns-|go-|cs-|ds-|us-|ts-)/, '');
 };
 
-<<<<<<< HEAD
-// Helper function to get placeholder image
-function getPlaceholderImage(categorySlug: string): string {
-  const imageMap: Record<string, string> = {
-    "scissors": "https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=300&h=200&fit=crop&q=80",
-    "forceps": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=300&h=200&fit=crop&q=80",
-    "needle-holders": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=300&h=200&fit=crop&q=80",
-    "retractors": "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=300&h=200&fit=crop&q=80",
-    "clamps": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=300&h=200&fit=crop&q=80",
-  };
-  return imageMap[categorySlug] || "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=300&h=200&fit=crop&q=80";
-}
-
-export async function generateStaticParams() {
-  return surgeryTypeCategories.map((category) => ({
-    slug: category.slug,
-  }));
-=======
 export async function generateStaticParams() {
   return getStaticSurgerySlugs();
->>>>>>> 6f7bc4d (Moiz db commit)
 }
 
 export async function generateMetadata({
@@ -86,13 +59,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }> | { slug: string };
 }): Promise<Metadata> {
   const resolvedParams = params instanceof Promise ? await params : params;
-<<<<<<< HEAD
-  const category = surgeryTypeCategories.find(
-    (cat) => cat.slug === resolvedParams.slug
-  );
-=======
   const category = await findSurgeryCategoryBySlug(resolvedParams.slug);
->>>>>>> 6f7bc4d (Moiz db commit)
 
   if (!category) {
     return {
@@ -112,23 +79,13 @@ export default async function SurgeryTypeDetailPage({
   params: Promise<{ slug: string }> | { slug: string };
 }) {
   const resolvedParams = params instanceof Promise ? await params : params;
-<<<<<<< HEAD
-  const category = surgeryTypeCategories.find(
-    (cat) => cat.slug === resolvedParams.slug
-  );
-=======
   const category = await findSurgeryCategoryBySlug(resolvedParams.slug);
->>>>>>> 6f7bc4d (Moiz db commit)
 
   if (!category) {
     notFound();
   }
 
-<<<<<<< HEAD
-  const products = getProductsBySurgeryType(category.slug);
-=======
   const products = await getProductsBySurgeryParentSlug(category.slug);
->>>>>>> 6f7bc4d (Moiz db commit)
 
   return (
     <main className="pt-20">
@@ -155,27 +112,23 @@ export default async function SurgeryTypeDetailPage({
         </div>
       </section>
 
-        {category.subcategories && category.subcategories.length > 0 && (
-          <section className="border-b border-stroke bg-gray-50 py-4 dark:border-strokedark dark:bg-blacksection">
-            <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-              <div className="mb-3 flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-black dark:text-white">
-                  Browse by Instrument Type
-                </h2>
-                <span className="text-xs text-waterloo">
-                  {category.subcategories.length} instrument types available
-                </span>
-              </div>
-              <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+      {category.subcategories && category.subcategories.length > 0 && (
+        <section className="border-b border-stroke bg-gray-50 py-4 dark:border-strokedark dark:bg-blacksection">
+          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+            <div className="mb-3 flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-black dark:text-white">
+                Browse by Instrument Type
+              </h2>
+              <span className="text-xs text-waterloo">
+                {category.subcategories.length} instrument types available
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
               {category.subcategories.map((subcat) => {
                 const instrumentTypeSlug = getInstrumentTypeSlug(subcat.slug);
                 const subcatProducts = products.filter((p) => {
                   return p.category === instrumentTypeSlug;
                 });
-<<<<<<< HEAD
-                const subcatImage = getPlaceholderImage(instrumentTypeSlug);
-=======
->>>>>>> 6f7bc4d (Moiz db commit)
 
                 return (
                   <Link
@@ -197,41 +150,41 @@ export default async function SurgeryTypeDetailPage({
         </section>
       )}
 
-        {products.length > 0 && (
-          <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
-            <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-              <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-                <div>
-                  <h2 className="text-xl font-semibold text-black dark:text-white lg:text-2xl">
-                    All {category.name} Products
-                  </h2>
-                  <p className="mt-0.5 text-xs text-waterloo">
-                    Showing {products.length} {products.length === 1 ? 'product' : 'products'}
-                  </p>
-                </div>
-                {category.subcategories && category.subcategories.length > 0 && (
-                  <div className="flex gap-1.5">
-                    <span className="text-xs text-waterloo self-center">Filter:</span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {category.subcategories.slice(0, 3).map((subcat) => {
-                        const instrumentTypeSlug = getInstrumentTypeSlug(subcat.slug);
-                        const subcatProducts = products.filter((p) => {
-                          return p.category === instrumentTypeSlug;
-                        });
-                        if (subcatProducts.length === 0) return null;
-                        return (
-                          <Link
-                            key={subcat.id}
-                            href={`/products/by-instrument-type/${instrumentTypeSlug}`}
-                            className="rounded border border-stroke bg-white px-2 py-0.5 text-xs font-medium text-waterloo transition-colors hover:border-primary hover:text-primary dark:border-strokedark dark:bg-blacksection"
-                          >
-                            {subcat.name} ({subcatProducts.length})
-                          </Link>
-                        );
-                      })}
-                    </div>
+      {products.length > 0 && (
+        <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
+          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+            <div className="mb-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div>
+                <h2 className="text-xl font-semibold text-black dark:text-white lg:text-2xl">
+                  All {category.name} Products
+                </h2>
+                <p className="mt-0.5 text-xs text-waterloo">
+                  Showing {products.length} {products.length === 1 ? 'product' : 'products'}
+                </p>
+              </div>
+              {category.subcategories && category.subcategories.length > 0 && (
+                <div className="flex gap-1.5">
+                  <span className="text-xs text-waterloo self-center">Filter:</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {category.subcategories.slice(0, 3).map((subcat) => {
+                      const instrumentTypeSlug = getInstrumentTypeSlug(subcat.slug);
+                      const subcatProducts = products.filter((p) => {
+                        return p.category === instrumentTypeSlug;
+                      });
+                      if (subcatProducts.length === 0) return null;
+                      return (
+                        <Link
+                          key={subcat.id}
+                          href={`/products/by-instrument-type/${instrumentTypeSlug}`}
+                          className="rounded border border-stroke bg-white px-2 py-0.5 text-xs font-medium text-waterloo transition-colors hover:border-primary hover:text-primary dark:border-strokedark dark:bg-blacksection"
+                        >
+                          {subcat.name} ({subcatProducts.length})
+                        </Link>
+                      );
+                    })}
                   </div>
-                )}
+                </div>
+              )}
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -243,11 +196,11 @@ export default async function SurgeryTypeDetailPage({
         </section>
       )}
 
-        {products.length === 0 && (
-          <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
-            <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-              <div className="rounded-lg border border-stroke bg-white p-6 text-center dark:border-strokedark dark:bg-blacksection">
-                <p className="text-sm text-waterloo mb-3">No products found for this surgery type.</p>
+      {products.length === 0 && (
+        <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
+          <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+            <div className="rounded-lg border border-stroke bg-white p-6 text-center dark:border-strokedark dark:bg-blacksection">
+              <p className="text-sm text-waterloo mb-3">No products found for this surgery type.</p>
               <Link
                 href="/products/by-surgery-type"
                 className="inline-flex items-center gap-2 text-primary hover:underline"
@@ -274,4 +227,3 @@ export default async function SurgeryTypeDetailPage({
     </main>
   );
 }
-

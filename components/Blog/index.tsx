@@ -1,12 +1,25 @@
 import React from "react";
 import BlogItem from "./BlogItem";
-import BlogData from "./blogData";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 
-const Blog = () => {
+const Blog = async () => {
+  const posts = await prisma.blogPost.findMany({
+    where: { published: true },
+    orderBy: { publishedAt: "desc" },
+    take: 2,
+  });
+
+  const blogs = posts.map((p) => ({
+    _id: p.id as any,
+    title: p.title,
+    mainImage: p.coverImage || "/images/blog/blog-01.png",
+    metadata: p.excerpt || "",
+  }));
+
   return (
     <div className="flex flex-col">
-      {BlogData.slice(0, 2).map((blog, key) => (
+      {blogs.map((blog, key) => (
         <BlogItem blog={blog} key={key} />
       ))}
       <Link

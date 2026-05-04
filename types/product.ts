@@ -5,19 +5,9 @@ export type Product = {
   description: string;
   shortDescription?: string;
   images: string[];
-<<<<<<< HEAD
-  category: string; // Instrument type category
-  surgeryTypes: string[]; // Surgery type categories
+  category?: string;
   subcategory?: string;
-=======
-  /**
-   * DB-backed products still compute these for UI (placeholders, surgery filters, etc).
-   * They are not persisted as single fields in Postgres (categories are normalized).
-   */
-  category?: string; // top-level instrument type slug
-  subcategory?: string; // instrument subcategory slug
-  surgeryTypes?: string[]; // top-level surgery type slugs
->>>>>>> 6f7bc4d (Moiz db commit)
+  surgeryTypes?: string[];
   specifications: {
     dimensions?: string;
     material?: string;
@@ -25,14 +15,7 @@ export type Product = {
     weight?: string;
     [key: string]: string | undefined;
   };
-<<<<<<< HEAD
-  compliance: {
-=======
-  /**
-   * Static in UI; optional so API-mapped products can omit and rely on defaults in components.
-   */
   compliance?: {
->>>>>>> 6f7bc4d (Moiz db commit)
     iso?: string[];
     ce?: boolean;
     mdr?: boolean;
@@ -75,4 +58,3 @@ export type InstrumentTypeCategory = Category & {
 export type SurgeryTypeCategory = Category & {
   type: "surgery";
 };
-

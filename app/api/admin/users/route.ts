@@ -20,6 +20,17 @@ async function requireAdmin() {
   return user;
 }
 
+export async function GET() {
+  const admin = await requireAdmin();
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const users = await prisma.user.findMany({
+    orderBy: { createdAt: "asc" },
+    select: { id: true, email: true, name: true, role: true, createdAt: true },
+  });
+  return NextResponse.json({ users });
+}
+
 export async function POST(req: Request) {
   const admin = await requireAdmin();
   if (!admin) {

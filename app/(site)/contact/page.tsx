@@ -1,9 +1,5 @@
 "use client";
 
-<<<<<<< HEAD
-import { Metadata } from "next";
-=======
->>>>>>> 6f7bc4d (Moiz db commit)
 import { useState, useEffect } from "react";
 import { useInquiryCart } from "@/context/InquiryCartContext";
 import { motion } from "framer-motion";
@@ -21,13 +17,10 @@ export default function ContactPage() {
     message: "",
   });
   const [files, setFiles] = useState<File[]>([]);
-<<<<<<< HEAD
-=======
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">(
     "idle",
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
->>>>>>> 6f7bc4d (Moiz db commit)
 
   useEffect(() => {
     setHasMounted(true);
@@ -43,13 +36,6 @@ export default function ContactPage() {
     }
   };
 
-<<<<<<< HEAD
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", { formData, files, inquiryItems: items });
-    // In production, this would send to your backend/email service
-=======
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("submitting");
@@ -68,7 +54,6 @@ export default function ContactPage() {
             quantity: it.quantity,
             notes: it.notes,
           })),
-          // File uploads are not implemented yet; keep this empty for now.
           attachments: files.map((f) => ({
             fileName: f.name,
             mimeType: f.type,
@@ -98,7 +83,6 @@ export default function ContactPage() {
       setStatus("error");
       setErrorMessage(err instanceof Error ? err.message : "Failed to send message");
     }
->>>>>>> 6f7bc4d (Moiz db commit)
   };
 
   return (
@@ -174,8 +158,6 @@ export default function ContactPage() {
                 </div>
               )}
 
-<<<<<<< HEAD
-=======
               {status === "success" && (
                 <div className="mb-6 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-900 dark:border-green-900/40 dark:bg-green-900/20 dark:text-green-100">
                   Message sent successfully.
@@ -187,7 +169,6 @@ export default function ContactPage() {
                 </div>
               )}
 
->>>>>>> 6f7bc4d (Moiz db commit)
               <form onSubmit={handleSubmit}>
                 <div className="mb-7.5 flex flex-col gap-7.5 lg:flex-row lg:justify-between lg:gap-14">
                   <input
@@ -317,11 +298,6 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     aria-label="send message"
-<<<<<<< HEAD
-                    className="inline-flex items-center gap-2.5 rounded-full bg-primary px-6 py-3 font-medium text-white duration-300 ease-in-out hover:bg-primaryho"
-                  >
-                    {items.length > 0 ? "Submit Inquiry" : "Send Message"}
-=======
                     disabled={status === "submitting"}
                     className="inline-flex items-center gap-2.5 rounded-full bg-primary px-6 py-3 font-medium text-white duration-300 ease-in-out hover:bg-primaryho disabled:cursor-not-allowed disabled:opacity-60"
                   >
@@ -330,7 +306,6 @@ export default function ContactPage() {
                       : items.length > 0
                         ? "Submit Inquiry"
                         : "Send Message"}
->>>>>>> 6f7bc4d (Moiz db commit)
                     <svg
                       className="fill-white"
                       width="14"
@@ -404,4 +379,3 @@ export default function ContactPage() {
     </main>
   );
 }
-

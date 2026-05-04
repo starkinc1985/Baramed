@@ -2,13 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-<<<<<<< HEAD
-import { searchProducts } from "@/data/products";
-import { Product } from "@/types/product";
-=======
 import { Product } from "@/types/product";
 import { mapPrismaProductToUiProduct } from "@/lib/mappers/product";
->>>>>>> 6f7bc4d (Moiz db commit)
 
 interface SearchProps {
   onClose?: () => void;
@@ -21,16 +16,6 @@ export default function Search({ onClose }: SearchProps) {
   const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-<<<<<<< HEAD
-    if (query.length >= 2) {
-      const searchResults = searchProducts(query);
-      setResults(searchResults.slice(0, 8)); // Limit to 8 results
-      setIsOpen(true);
-    } else {
-      setResults([]);
-      setIsOpen(false);
-    }
-=======
     let cancelled = false;
 
     async function run() {
@@ -70,23 +55,16 @@ export default function Search({ onClose }: SearchProps) {
     return () => {
       cancelled = true;
     };
->>>>>>> 6f7bc4d (Moiz db commit)
   }, [query]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
-      ) {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleResultClick = () => {
@@ -111,12 +89,7 @@ export default function Search({ onClose }: SearchProps) {
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
       </div>
 
@@ -133,23 +106,13 @@ export default function Search({ onClose }: SearchProps) {
                 <div className="flex items-start gap-4">
                   {product.images[0] && (
                     <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">
-                      <img
-                        src={product.images[0]}
-                        alt={product.name}
-                        className="h-full w-full object-cover"
-                      />
+                      <img src={product.images[0]} alt={product.name} className="h-full w-full object-cover" />
                     </div>
                   )}
                   <div className="flex-1">
-                    <h3 className="mb-1 font-semibold text-black dark:text-white">
-                      {product.name}
-                    </h3>
-                    <p className="mb-1 text-sm text-waterloo">
-                      Code: {product.productCode}
-                    </p>
-                    <p className="line-clamp-2 text-sm text-waterloo">
-                      {product.shortDescription || product.description}
-                    </p>
+                    <h3 className="mb-1 font-semibold text-black dark:text-white">{product.name}</h3>
+                    <p className="mb-1 text-sm text-waterloo">Code: {product.productCode}</p>
+                    <p className="line-clamp-2 text-sm text-waterloo">{product.shortDescription || product.description}</p>
                   </div>
                 </div>
               </Link>
@@ -175,4 +138,3 @@ export default function Search({ onClose }: SearchProps) {
     </div>
   );
 }
-

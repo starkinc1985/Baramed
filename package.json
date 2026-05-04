@@ -6,14 +6,6 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-<<<<<<< HEAD
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "framer-motion": "^12.0.6",
-    "next": "^14.2.0",
-    "next-themes": "^0.2.1",
-=======
     "lint": "next lint",
     "prisma:generate": "prisma generate",
     "prisma:studio": "prisma studio",
@@ -28,7 +20,6 @@
     "next": "^14.2.0",
     "next-themes": "^0.2.1",
     "prisma": "^6.19.3",
->>>>>>> 6f7bc4d (Moiz db commit)
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",
@@ -36,10 +27,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",
-<<<<<<< HEAD
-=======
     "@types/bcryptjs": "^2.4.6",
->>>>>>> 6f7bc4d (Moiz db commit)
     "@types/node": "25.0.6",
     "@types/react": "19.2.8",
     "autoprefixer": "^10.4.23",

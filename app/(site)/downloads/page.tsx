@@ -1,124 +1,59 @@
 import { Metadata } from "next";
-import SectionHeader from "@/components/Common/SectionHeader";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import { DownloadCategory } from "@prisma/client";
 
 export const metadata: Metadata = {
   title: "Downloads | BÄRAMED INSTRUMENTE GMBH",
-  description: "Download our product catalogs, certificates, brochures, and instructions for use",
+  description:
+    "Download our product catalogs, certificates, brochures, and instructions for use",
 };
 
-interface DownloadItem {
-  id: string;
-  title: string;
-  description: string;
-  category: "catalog" | "certificate" | "brochure" | "ifu";
-  fileSize: string;
-  fileType: string;
-  downloadUrl: string;
-}
+const categoryLabels: Record<DownloadCategory, string> = {
+  CATALOG: "Product Catalog",
+  CERTIFICATE: "Certificates",
+  BROCHURE: "Brochures",
+  IFU: "Instructions for Use",
+  OTHER: "Other Documents",
+};
 
-const downloads: DownloadItem[] = [
-  {
-    id: "1",
-    title: "Complete Product Catalog 2024",
-    description: "Comprehensive catalog featuring all our surgical instruments",
-    category: "catalog",
-    fileSize: "15.2 MB",
-    fileType: "PDF",
-    downloadUrl: "/downloads/catalog-2024.pdf",
-  },
-  {
-    id: "2",
-    title: "ISO 13485 Certificate",
-    description: "Medical Devices Quality Management System Certificate",
-    category: "certificate",
-    fileSize: "2.1 MB",
-    fileType: "PDF",
-    downloadUrl: "/downloads/iso-13485.pdf",
-  },
-  {
-    id: "3",
-    title: "ISO 9001 Certificate",
-    description: "Quality Management System Certificate",
-    category: "certificate",
-    fileSize: "1.8 MB",
-    fileType: "PDF",
-    downloadUrl: "/downloads/iso-9001.pdf",
-  },
-  {
-    id: "4",
-    title: "CE Declaration of Conformity",
-    description: "European Conformity Declaration for Medical Devices",
-    category: "certificate",
-    fileSize: "1.5 MB",
-    fileType: "PDF",
-    downloadUrl: "/downloads/ce-declaration.pdf",
-  },
-  {
-    id: "5",
-    title: "Company Brochure",
-    description: "Overview of our company, capabilities, and services",
-    category: "brochure",
-    fileSize: "8.5 MB",
-    fileType: "PDF",
-    downloadUrl: "/downloads/company-brochure.pdf",
-  },
-  {
-    id: "6",
-    title: "Scissors - Instructions for Use",
-    description: "IFU for all types of surgical scissors",
-    category: "ifu",
-    fileSize: "3.2 MB",
-    fileType: "PDF",
-    downloadUrl: "/downloads/ifu-scissors.pdf",
-  },
-  {
-    id: "7",
-    title: "Forceps - Instructions for Use",
-    description: "IFU for all types of surgical forceps",
-    category: "ifu",
-    fileSize: "2.9 MB",
-    fileType: "PDF",
-    downloadUrl: "/downloads/ifu-forceps.pdf",
-  },
-  {
-    id: "8",
-    title: "Retractors - Instructions for Use",
-    description: "IFU for all types of surgical retractors",
-    category: "ifu",
-    fileSize: "3.5 MB",
-    fileType: "PDF",
-    downloadUrl: "/downloads/ifu-retractors.pdf",
-  },
+const categoryOrder: DownloadCategory[] = [
+  "CATALOG",
+  "CERTIFICATE",
+  "BROCHURE",
+  "IFU",
+  "OTHER",
 ];
 
-const categoryLabels = {
-  catalog: "Product Catalog",
-  certificate: "Certificates",
-  brochure: "Brochures",
-  ifu: "Instructions for Use",
-};
+export default async function DownloadsPage() {
+  const downloads = await prisma.download.findMany({
+    where: { published: true },
+    orderBy: [{ category: "asc" }, { sortOrder: "asc" }],
+  });
 
-export default function DownloadsPage() {
-  const groupedDownloads = downloads.reduce((acc, item) => {
-    if (!acc[item.category]) {
-      acc[item.category] = [];
-    }
-    acc[item.category].push(item);
-    return acc;
-  }, {} as Record<string, DownloadItem[]>);
+  const grouped = downloads.reduce<Record<string, typeof downloads>>(
+    (acc, item) => {
+      if (!acc[item.category]) acc[item.category] = [];
+      acc[item.category].push(item);
+      return acc;
+    },
+    {},
+  );
+
+  const orderedCategories = categoryOrder.filter((c) => grouped[c]?.length);
 
   return (
     <main className="pt-20">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-900 py-20 lg:py-30">
+      <section className="bg-gradient-to-b from-white to-gray-50 py-20 dark:from-black dark:to-gray-900 lg:py-30">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <div className="text-center">
             <h1 className="mb-5 text-3xl font-bold text-black dark:text-white xl:text-hero">
               Downloads
             </h1>
             <p className="mx-auto mb-8 max-w-[800px] text-regular text-waterloo">
-              Access our product catalogs, certificates, brochures, and instructions for use
+              Access our product catalogs, certificates, brochures, and
+              instructions for use
             </p>
           </div>
         </div>
@@ -127,13 +62,13 @@ export default function DownloadsPage() {
       {/* Downloads by Category */}
       <section className="py-20 lg:py-25">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-          {Object.entries(groupedDownloads).map(([category, items]) => (
+          {orderedCategories.map((category) => (
             <div key={category} className="mb-15">
               <h2 className="mb-6 text-2xl font-bold text-black dark:text-white">
-                {categoryLabels[category as keyof typeof categoryLabels]}
+                {categoryLabels[category]}
               </h2>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {items.map((item) => (
+                {grouped[category].map((item) => (
                   <div
                     key={item.id}
                     className="rounded-lg border border-stroke bg-white p-6 shadow-1 dark:border-strokedark dark:bg-blacksection"
@@ -149,9 +84,9 @@ export default function DownloadsPage() {
                       </div>
                     </div>
                     <div className="mb-4 flex items-center gap-4 text-sm text-waterloo">
-                      <span>{item.fileSize}</span>
-                      <span>•</span>
-                      <span>{item.fileType}</span>
+                      {item.fileSize && <span>{item.fileSize}</span>}
+                      {item.fileSize && item.fileType && <span>•</span>}
+                      {item.fileType && <span>{item.fileType}</span>}
                     </div>
                     <a
                       href={item.downloadUrl}
@@ -189,7 +124,8 @@ export default function DownloadsPage() {
               Need Additional Documentation?
             </h2>
             <p className="mb-8 text-regular text-waterloo">
-              Contact us if you need specific certificates, technical drawings, or other documentation
+              Contact us if you need specific certificates, technical drawings,
+              or other documentation
             </p>
             <Link
               href="/contact"
@@ -203,4 +139,3 @@ export default function DownloadsPage() {
     </main>
   );
 }
-

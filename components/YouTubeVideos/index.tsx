@@ -1,34 +1,13 @@
 import SectionHeader from "../Common/SectionHeader";
+import { prisma } from "@/lib/prisma";
 
-interface Video {
-  id: string;
-  title: string;
-  thumbnail: string;
-  youtubeId: string;
-}
+const YouTubeVideos = async () => {
+  const videos = await prisma.video.findMany({
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+  });
 
-const videos: Video[] = [
-  {
-    id: "1",
-    title: "Manufacturing Process Overview",
-    thumbnail: "/images/videos/manufacturing-thumb.jpg",
-    youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube video ID
-  },
-  {
-    id: "2",
-    title: "Quality Control Procedures",
-    thumbnail: "/images/videos/quality-thumb.jpg",
-    youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube video ID
-  },
-  {
-    id: "3",
-    title: "Product Showcase",
-    thumbnail: "/images/videos/products-thumb.jpg",
-    youtubeId: "dQw4w9WgXcQ", // Replace with actual YouTube video ID
-  },
-];
+  if (videos.length === 0) return null;
 
-const YouTubeVideos = () => {
   return (
     <section className="py-20 lg:py-25 xl:py-30">
       <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
@@ -36,7 +15,8 @@ const YouTubeVideos = () => {
           headerInfo={{
             title: "Video Library",
             subtitle: "See Our Process",
-            description: "Watch videos about our manufacturing process, quality control, and products",
+            description:
+              "Watch videos about our manufacturing process, quality control, and products",
           }}
         />
 
@@ -77,6 +57,9 @@ const YouTubeVideos = () => {
                 <h3 className="mb-2 font-semibold text-black dark:text-white">
                   {video.title}
                 </h3>
+                {video.description && (
+                  <p className="mb-3 text-sm text-waterloo">{video.description}</p>
+                )}
                 <a
                   href={`https://www.youtube.com/watch?v=${video.youtubeId}`}
                   target="_blank"
@@ -108,4 +91,3 @@ const YouTubeVideos = () => {
 };
 
 export default YouTubeVideos;
-

@@ -1,9 +1,14 @@
 "use client";
 import { useState } from "react";
 import FAQItem from "./FAQItem";
-import faqData from "./faqData";
 
-const FAQ = () => {
+type FaqRow = {
+  id: string;
+  question: string;
+  answer: string;
+};
+
+const FAQ = ({ faqs }: { faqs: FaqRow[] }) => {
   const [activeFaq, setActiveFaq] = useState(0);
 
   const handleFaqToggle = (id: number) => {
@@ -12,10 +17,16 @@ const FAQ = () => {
 
   return (
     <div className="space-y-3">
-      {faqData.map((faq, key) => (
+      {faqs.map((faq, idx) => (
         <FAQItem
-          key={key}
-          faqData={{ ...faq, activeFaq, handleFaqToggle }}
+          key={faq.id}
+          faqData={{
+            id: idx + 1,
+            quest: faq.question,
+            ans: faq.answer,
+            activeFaq,
+            handleFaqToggle,
+          }}
         />
       ))}
     </div>

@@ -2,12 +2,7 @@
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import Lines from "@/components/Lines";
 import ScrollToTop from "@/components/ScrollToTop";
-<<<<<<< HEAD
-import ChatBot from "@/components/ChatBot";
-=======
->>>>>>> 6f7bc4d (Moiz db commit)
 import { ThemeProvider } from "next-themes";
 import ToasterContext from "../context/ToastContext";
 import { InquiryCartProvider } from "@/context/InquiryCartContext";
@@ -24,16 +19,11 @@ export default function ClientLayout({
             defaultTheme="light"
         >
             <InquiryCartProvider>
-                {/* <Lines /> */}
                 <Header />
                 <ToasterContext />
                 {children}
                 <Footer />
                 <ScrollToTop />
-<<<<<<< HEAD
-                <ChatBot />
-=======
->>>>>>> 6f7bc4d (Moiz db commit)
             </InquiryCartProvider>
         </ThemeProvider>
     );
