@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Certifications = () => {
   return (
-    <section className="border-b border-stroke bg-gray-50 py-6 dark:border-strokedark dark:bg-blacksection">
+    <section className="border-b border-stroke bg-white py-10 dark:border-strokedark dark:bg-darksectiontwo">
       <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
         <SectionHeader
           headerInfo={{
@@ -14,32 +14,32 @@ const Certifications = () => {
         />
 
         <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
-          <div className="rounded-lg border border-stroke bg-white p-4 text-center dark:border-strokedark dark:bg-blacksection">
+          <div className="rounded-xl border border-stroke bg-sectionalt p-5 text-center shadow-[0_2px_10px_rgba(10,30,100,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_6px_20px_rgba(0,107,255,0.12)] dark:border-strokedark dark:bg-darkcard">
             <div className="mb-2 text-2xl font-bold text-primary">ISO 13485</div>
             <p className="text-xs text-waterloo">Medical Devices QMS</p>
           </div>
 
-          <div className="rounded-lg border border-stroke bg-white p-4 text-center dark:border-strokedark dark:bg-blacksection">
+          <div className="rounded-xl border border-stroke bg-sectionalt p-5 text-center shadow-[0_2px_10px_rgba(10,30,100,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_6px_20px_rgba(0,107,255,0.12)] dark:border-strokedark dark:bg-darkcard">
             <div className="mb-2 text-2xl font-bold text-primary">ISO 9001</div>
             <p className="text-xs text-waterloo">Quality Management</p>
           </div>
 
-          <div className="rounded-lg border border-stroke bg-white p-4 text-center dark:border-strokedark dark:bg-blacksection">
+          <div className="rounded-xl border border-stroke bg-sectionalt p-5 text-center shadow-[0_2px_10px_rgba(10,30,100,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_6px_20px_rgba(0,107,255,0.12)] dark:border-strokedark dark:bg-darkcard">
             <div className="mb-2 text-2xl font-bold text-primary">CE</div>
             <p className="text-xs text-waterloo">CE Marking</p>
           </div>
 
-          <div className="rounded-lg border border-stroke bg-white p-4 text-center dark:border-strokedark dark:bg-blacksection">
+          <div className="rounded-xl border border-stroke bg-sectionalt p-5 text-center shadow-[0_2px_10px_rgba(10,30,100,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_6px_20px_rgba(0,107,255,0.12)] dark:border-strokedark dark:bg-darkcard">
             <div className="mb-2 text-2xl font-bold text-primary">MDR</div>
             <p className="text-xs text-waterloo">MDR Compliant</p>
           </div>
 
-          <div className="rounded-lg border border-stroke bg-white p-4 text-center dark:border-strokedark dark:bg-blacksection">
+          <div className="rounded-xl border border-stroke bg-sectionalt p-5 text-center shadow-[0_2px_10px_rgba(10,30,100,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_6px_20px_rgba(0,107,255,0.12)] dark:border-strokedark dark:bg-darkcard">
             <div className="mb-2 text-2xl font-bold text-primary">FDA</div>
             <p className="text-xs text-waterloo">FDA Registered</p>
           </div>
 
-          <div className="rounded-lg border border-stroke bg-white p-4 text-center dark:border-strokedark dark:bg-blacksection">
+          <div className="rounded-xl border border-stroke bg-sectionalt p-5 text-center shadow-[0_2px_10px_rgba(10,30,100,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_6px_20px_rgba(0,107,255,0.12)] dark:border-strokedark dark:bg-darkcard">
             <div className="mb-2 text-2xl font-bold text-primary">GMP</div>
             <p className="text-xs text-waterloo">Good Manufacturing Practice</p>
           </div>

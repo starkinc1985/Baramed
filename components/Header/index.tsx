@@ -29,9 +29,9 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed left-0 top-0 z-99999 w-full py-7 ${
+      className={`fixed left-0 top-0 z-99999 w-full py-7 bg-bodybg/90 backdrop-blur-md dark:bg-darkbody/90 transition-all duration-200 ${
         stickyMenu
-          ? "bg-white py-4! shadow-sm transition duration-100 dark:bg-black"
+          ? "py-4! shadow-[0_2px_20px_rgba(10,30,100,0.1)] bg-bodybg/98! dark:bg-darkbody/98!"
           : ""
       }`}
     >
@@ -93,7 +93,7 @@ const Header = () => {
         <div
           className={`invisible h-0 w-full items-center justify-between xl:visible xl:flex xl:h-auto xl:flex-1 xl:min-w-0 ${
             navigationOpen &&
-            "navbar visible! mt-4 h-auto max-h-[400px] rounded-md bg-white p-7.5 shadow-solid-5 dark:bg-blacksection xl:h-auto xl:p-0 xl:shadow-none xl:dark:bg-transparent"
+            "navbar visible! mt-4 h-auto max-h-[400px] rounded-xl bg-bodybg p-7.5 shadow-[0_8px_30px_rgba(10,30,100,0.12)] dark:bg-darksectiontwo xl:h-auto xl:p-0 xl:shadow-none xl:dark:bg-transparent"
           }`}
         >
           <nav className="flex-1 xl:min-w-0">

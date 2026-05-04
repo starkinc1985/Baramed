@@ -8,7 +8,7 @@ const Feature = () => {
   return (
     <>
       {/* <!-- ===== Features Start ===== --> */}
-      <section id="features" className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
+      <section id="features" className="border-b border-stroke bg-sectionalt py-10 dark:border-strokedark dark:bg-darksectionone">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           {/* <!-- Section Title Start --> */}
           <SectionHeader

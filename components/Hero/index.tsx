@@ -9,9 +9,10 @@ const badges = [
   { label: "MDR Compliant" },
 ];
 
+
 const Hero = () => {
   return (
-    <section className="relative overflow-hidden pb-20 pt-35 md:pt-40 xl:pb-25 xl:pt-46">
+    <section className="relative overflow-hidden pb-24 pt-40 md:pt-44 xl:pb-32 xl:pt-52">
       {/* Background Image */}
       <div className="absolute inset-0 -z-10">
         <Image
@@ -21,26 +22,30 @@ const Hero = () => {
           priority
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-white/80 dark:bg-black/78"></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-transparent dark:from-blue-950/20"></div>
+        {/* Base light wash */}
+        <div className="absolute inset-0 bg-white/40 dark:bg-black/50"></div>
+        {/* Left-to-right fade: readable left, image shows right */}
+        <div className="absolute inset-0 bg-gradient-to-r from-white/95 via-white/75 to-white/15 dark:from-black/92 dark:via-black/65 dark:to-black/10"></div>
+        {/* Bottom fade so section has a clean edge */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-bodybg to-transparent dark:from-darkbody"></div>
       </div>
 
       {/* Decorative blobs */}
-      <div className="absolute -top-24 right-10 -z-10 h-96 w-96 rounded-full bg-primary/6 blur-3xl dark:bg-primary/10 animate-float"></div>
+      <div className="absolute -top-24 right-10 -z-10 h-96 w-96 animate-float rounded-full bg-primary/6 blur-3xl dark:bg-primary/10"></div>
       <div className="absolute bottom-10 left-10 -z-10 h-64 w-64 rounded-full bg-meta/6 blur-3xl dark:bg-meta/10"></div>
 
       <div className="relative mx-auto max-w-c-1390 px-4 md:px-8 2xl:px-0">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:gap-8 xl:gap-20">
+        <div className="flex flex-col">
 
-          {/* Left content */}
-          <div className="w-full lg:w-1/2">
+          {/* Content */}
+          <div className="w-full max-w-3xl">
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="mb-4.5 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-1 text-sm font-semibold uppercase tracking-widest text-primary"
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse-glow"></span>
+              <span className="h-1.5 w-1.5 animate-pulse-glow rounded-full bg-primary"></span>
               Bäramed Instrumente GmbH
             </motion.p>
 
@@ -87,15 +92,9 @@ const Hero = () => {
                 className="group relative flex items-center gap-2 overflow-hidden rounded-full bg-primary px-7.5 py-2.5 font-medium text-white shadow-[0_4px_18px_rgba(0,107,255,0.38)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primaryho hover:shadow-[0_8px_28px_rgba(0,107,255,0.45)]"
               >
                 <span>Browse Products</span>
-                <svg
-                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-                {/* shimmer sweep */}
                 <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full"></span>
               </Link>
 
@@ -104,12 +103,7 @@ const Hero = () => {
                 className="group flex items-center gap-2 rounded-full border-2 border-primary bg-transparent px-7.5 py-2.5 font-medium text-primary transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary hover:text-white hover:shadow-[0_8px_24px_rgba(0,107,255,0.3)]"
               >
                 <span>Request Quote</span>
-                <svg
-                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+                <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </Link>
@@ -134,30 +128,6 @@ const Hero = () => {
               ))}
             </motion.div>
           </div>
-
-          {/* Right image panel */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.75, delay: 0.3, ease: "easeOut" }}
-            className="mt-10 hidden lg:block lg:w-1/2"
-          >
-            <div className="group relative aspect-[700/460] w-full overflow-hidden rounded-2xl shadow-solid-l ring-1 ring-primary/12">
-              <Image
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                src="/images/HomepageImages/Surgical-Instruments-Main-1.webp"
-                alt="Precision Surgical Instruments"
-                fill
-              />
-              {/* Gradient overlay on image */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-              {/* Bottom caption badge */}
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-xl bg-white/90 px-4 py-2.5 backdrop-blur-sm dark:bg-black/80">
-                <span className="text-sm font-semibold text-black dark:text-white">German Precision Engineering</span>
-                <span className="rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium text-primary">Since 1995</span>
-              </div>
-            </div>
-          </motion.div>
 
         </div>
       </div>

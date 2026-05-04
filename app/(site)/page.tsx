@@ -32,7 +32,7 @@ export default async function Home() {
       <Hero />
 
       {/* Quick Navigation to Categories */}
-      <section className="border-b border-stroke bg-gradient-to-b from-white to-gray-50/80 py-10 dark:border-strokedark dark:from-blacksection dark:to-blacksection">
+      <section className="border-b border-stroke bg-sectionalt py-10 dark:border-strokedark dark:bg-darksectionone">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <div className="mb-8 text-center">
             <span className="mb-3 inline-block rounded-full border border-primary/20 bg-primary/8 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
@@ -48,7 +48,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <Link
               href="/products/by-instrument-type"
-              className="group relative overflow-hidden rounded-xl border border-stroke bg-white p-6 shadow-solid-2 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_8px_30px_rgba(0,107,255,0.12)] dark:border-strokedark dark:bg-blacksection"
+              className="group relative overflow-hidden rounded-xl border border-stroke bg-white p-6 shadow-solid-2 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_8px_30px_rgba(0,107,255,0.12)] dark:border-strokedark dark:bg-darkcard"
             >
               <div className="absolute left-0 top-0 h-full w-1 rounded-l-xl bg-gradient-to-b from-primary to-primary/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-white">
@@ -78,7 +78,7 @@ export default async function Home() {
 
             <Link
               href="/products/by-surgery-type"
-              className="group relative overflow-hidden rounded-xl border border-stroke bg-white p-6 shadow-solid-2 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_8px_30px_rgba(0,107,255,0.12)] dark:border-strokedark dark:bg-blacksection"
+              className="group relative overflow-hidden rounded-xl border border-stroke bg-white p-6 shadow-solid-2 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-[0_8px_30px_rgba(0,107,255,0.12)] dark:border-strokedark dark:bg-darkcard"
             >
               <div className="absolute left-0 top-0 h-full w-1 rounded-l-xl bg-gradient-to-b from-meta to-meta/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
               <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-meta/10 text-meta transition-colors duration-300 group-hover:bg-meta group-hover:text-white">
@@ -111,7 +111,7 @@ export default async function Home() {
 
       {/* Featured Products */}
       {featuredProducts.length > 0 && (
-        <section className="border-b border-stroke bg-white py-12 dark:border-strokedark dark:bg-blacksection">
+        <section className="border-b border-stroke bg-white py-12 dark:border-strokedark dark:bg-darksectiontwo">
           <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
             <div className="mb-8 text-center">
               <span className="mb-3 inline-block rounded-full border border-primary/20 bg-primary/8 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-primary">
@@ -156,7 +156,7 @@ export default async function Home() {
       <Feature />
 
       {/* FAQ and News Side by Side */}
-      <section className="border-b border-stroke bg-gray-50 py-8 dark:border-strokedark dark:bg-blacksection">
+      <section className="border-b border-stroke bg-white py-8 dark:border-strokedark dark:bg-darksectiontwo">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
             {/* FAQ Section */}

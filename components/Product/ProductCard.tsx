@@ -41,7 +41,7 @@ export default function ProductCard({ product, className = "" }: ProductCardProp
   return (
     <Link
       href={`/products/${product.id}`}
-      className={`group relative overflow-hidden rounded-2xl border-2 border-stroke bg-white shadow-md transition-all duration-300 hover:border-primary hover:shadow-2xl hover:-translate-y-1 dark:border-strokedark dark:bg-blacksection ${className}`}
+      className={`group relative overflow-hidden rounded-2xl border border-stroke bg-white shadow-[0_2px_14px_rgba(10,30,100,0.08)] transition-all duration-300 hover:-translate-y-1.5 hover:border-primary/50 hover:shadow-[0_12px_36px_rgba(0,107,255,0.18)] dark:border-strokedark dark:bg-darkcard ${className}`}
     >
       <div className="relative aspect-square w-full overflow-hidden bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-800 dark:via-gray-850 dark:to-gray-900">
         <Image
