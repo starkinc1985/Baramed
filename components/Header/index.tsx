@@ -150,9 +150,10 @@ const Header = () => {
 
             <Link
               href="/contact"
-              className="flex items-center justify-center whitespace-nowrap rounded-full bg-primary px-5 py-2 text-sm font-medium text-white transition-colors duration-300 ease-in-out hover:bg-primaryho xl:px-6 xl:py-2.5 xl:text-regular"
+              className="group relative flex items-center justify-center overflow-hidden whitespace-nowrap rounded-full bg-primary px-5 py-2 text-sm font-medium text-white shadow-[0_3px_14px_rgba(0,107,255,0.35)] transition-all duration-300 hover:-translate-y-px hover:bg-primaryho hover:shadow-[0_6px_20px_rgba(0,107,255,0.45)] xl:px-6 xl:py-2.5 xl:text-regular"
             >
               Contact
+              <span className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 group-hover:translate-x-full"></span>
             </Link>
           </div>
         </div>
