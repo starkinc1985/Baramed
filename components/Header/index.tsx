@@ -29,10 +29,10 @@ const Header = () => {
 
   return (
     <header
-      className={`fixed left-0 top-0 z-99999 w-full py-7 bg-bodybg/90 backdrop-blur-md dark:bg-darkbody/90 transition-all duration-200 ${
+      className={`fixed left-0 top-0 z-99999 w-full py-7 transition-all duration-300 ${
         stickyMenu
-          ? "py-4! shadow-[0_2px_20px_rgba(10,30,100,0.1)] bg-bodybg/98! dark:bg-darkbody/98!"
-          : ""
+          ? "bg-bodybg/97 py-4! shadow-[0_2px_20px_rgba(10,30,100,0.1)] backdrop-blur-md dark:bg-darkbody/97"
+          : "bg-transparent"
       }`}
     >
       <div className="relative mx-auto max-w-c-1390 items-center justify-between px-4 md:px-8 xl:flex 2xl:px-0">
