@@ -57,6 +57,26 @@ const menuData: Menu[] = [
     title: "Products",
     newTab: false,
     path: "/products",
+    submenu: [
+      {
+        id: 21,
+        title: "All Products",
+        path: "/products",
+        newTab: false,
+      },
+      {
+        id: 22,
+        title: "Browse by Instrument Type",
+        path: "/products/by-instrument-type",
+        newTab: false,
+      },
+      {
+        id: 23,
+        title: "Browse by Surgery Type",
+        path: "/products/by-surgery-type",
+        newTab: false,
+      },
+    ],
   },
   {
     id: 3,

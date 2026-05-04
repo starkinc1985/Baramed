@@ -9,7 +9,7 @@ import menuData from "./menuData";
 
 const Header = () => {
   const [navigationOpen, setNavigationOpen] = useState(false);
-  const [dropdownToggler, setDropdownToggler] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [stickyMenu, setStickyMenu] = useState(false);
 
   const pathUrl = usePathname();
@@ -96,14 +96,14 @@ const Header = () => {
             "navbar visible! mt-4 h-auto max-h-[400px] rounded-md bg-white p-7.5 shadow-solid-5 dark:bg-blacksection xl:h-auto xl:p-0 xl:shadow-none xl:dark:bg-transparent"
           }`}
         >
-          <nav className="flex-1 xl:min-w-0 xl:overflow-hidden">
+          <nav className="flex-1 xl:min-w-0">
             <ul className="flex flex-col gap-5 xl:flex-row xl:items-center xl:gap-3 xl:flex-nowrap">
               {menuData.map((menuItem, key) => (
                 <li key={key} className={`${menuItem.submenu ? "group relative" : ""} flex-shrink-0`}>
                   {menuItem.submenu ? (
                     <>
                       <button
-                        onClick={() => setDropdownToggler(!dropdownToggler)}
+                        onClick={() => setOpenDropdown(openDropdown === menuItem.id ? null : menuItem.id)}
                         className="flex cursor-pointer items-center gap-1.5 whitespace-nowrap text-sm font-medium text-black transition-colors hover:text-primary dark:text-white xl:text-regular"
                       >
                         {menuItem.title}
@@ -119,7 +119,7 @@ const Header = () => {
                       </button>
 
                       <ul
-                        className={`dropdown ${dropdownToggler ? "flex" : ""}`}
+                        className={`dropdown ${openDropdown === menuItem.id ? "flex" : ""}`}
                       >
                         {menuItem.submenu.map((item, key) => (
                           <li key={key} className="hover:text-primary">
