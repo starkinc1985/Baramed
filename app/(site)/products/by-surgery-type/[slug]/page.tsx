@@ -50,7 +50,11 @@ const getInstrumentTypeSlug = (surgerySubcategorySlug: string): string => {
 };
 
 export async function generateStaticParams() {
-  return getStaticSurgerySlugs();
+  try {
+    return await getStaticSurgerySlugs();
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({

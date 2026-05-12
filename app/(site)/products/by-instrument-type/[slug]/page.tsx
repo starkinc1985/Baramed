@@ -10,7 +10,11 @@ import ProductCard from "@/components/Product/ProductCard";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export async function generateStaticParams() {
-  return getStaticInstrumentSlugs();
+  try {
+    return await getStaticInstrumentSlugs();
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({
