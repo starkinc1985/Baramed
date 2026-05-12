@@ -13,6 +13,7 @@
     "db:push": "prisma db push"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.95.2",
     "@prisma/client": "^6.19.3",
     "bcryptjs": "^3.0.3",
     "framer-motion": "^12.0.6",

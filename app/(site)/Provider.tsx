@@ -3,6 +3,7 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ScrollToTop from "@/components/ScrollToTop";
+import ChatBot from "@/components/ChatBot";
 import { ThemeProvider } from "next-themes";
 import ToasterContext from "../context/ToastContext";
 import { InquiryCartProvider } from "@/context/InquiryCartContext";
@@ -24,6 +25,7 @@ export default function ClientLayout({
                 {children}
                 <Footer />
                 <ScrollToTop />
+                <ChatBot />
             </InquiryCartProvider>
         </ThemeProvider>
     );
