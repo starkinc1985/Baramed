@@ -4,7 +4,9 @@
       "Bash(Get-Date -Format \"yyyyMMddHHmmss\")",
       "Bash(npm install *)",
       "Bash(node -e \"require\\('@anthropic-ai/sdk'\\); console.log\\('ok'\\)\")",
-      "Bash(Test-Path \"c:\\\\Users\\\\abdul\\\\OneDrive\\\\Documents\\\\Baramed\\\\solid-nextjs-main\\\\solid-nextjs-main\\\\components\\\\ChatBot\\\\index.tsx\")"
+      "Bash(Test-Path \"c:\\\\Users\\\\abdul\\\\OneDrive\\\\Documents\\\\Baramed\\\\solid-nextjs-main\\\\solid-nextjs-main\\\\components\\\\ChatBot\\\\index.tsx\")",
+      "Bash(npx tsx *)",
+      "Bash(grep -v \"Use \\\\`node\")"
     ]
   }
 }

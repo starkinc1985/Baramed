@@ -14,12 +14,16 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.95.2",
+    "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^6.19.3",
+    "@prisma/extension-accelerate": "^3.0.1",
     "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
     "framer-motion": "^12.0.6",
     "jose": "^6.2.2",
     "next": "^14.2.0",
     "next-themes": "^0.2.1",
+    "pg": "^8.20.0",
     "prisma": "^6.19.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -30,11 +34,13 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",
     "@types/bcryptjs": "^2.4.6",
-    "@types/node": "25.0.6",
+    "@types/node": "^25.0.6",
+    "@types/pg": "^8.20.0",
     "@types/react": "19.2.8",
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.0.0",
+    "tsx": "^4.21.1",
     "typescript": "5.9.3"
   },
   "engines": {
