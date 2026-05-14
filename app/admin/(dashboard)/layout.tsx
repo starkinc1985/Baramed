@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 import { redirect } from "next/navigation";
 import { getAdminSession } from "@/lib/auth/admin-session";
 import LogoutButton from "./LogoutButton";

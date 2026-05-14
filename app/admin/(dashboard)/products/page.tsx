@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
+import ImportButton from "./ImportButton";
 
 export const metadata: Metadata = { title: "Products | Admin" };
 
@@ -21,12 +22,15 @@ export default async function AdminProductsPage() {
           <h1 className="text-2xl font-bold text-black dark:text-white">Products</h1>
           <p className="text-sm text-waterloo">{products.length} total</p>
         </div>
-        <Link
-          href="/admin/products/new"
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition hover:bg-primaryho"
-        >
-          + New Product
-        </Link>
+        <div className="flex items-center gap-2">
+          <ImportButton />
+          <Link
+            href="/admin/products/new"
+            className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition hover:bg-primaryho"
+          >
+            + New Product
+          </Link>
+        </div>
       </div>
 
       <div className="overflow-hidden rounded-xl border border-stroke bg-white dark:border-strokedark dark:bg-blacksection">
