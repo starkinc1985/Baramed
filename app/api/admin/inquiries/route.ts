@@ -1,19 +1,16 @@
 import { NextResponse } from "next/server";
 import { requireAdmin, unauthorized } from "@/lib/admin/require-admin";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Inquiry } from "@/models/Inquiry";
 
 export async function GET(req: Request) {
   const admin = await requireAdmin();
   if (!admin) return unauthorized();
-
+  await connectDB();
   const { searchParams } = new URL(req.url);
-  const status = searchParams.get("status") || undefined;
-
-  const inquiries = await prisma.inquiry.findMany({
-    where: status ? { status: status as any } : undefined,
-    orderBy: { createdAt: "desc" },
-    include: { _count: { select: { items: true } } },
-  });
-
-  return NextResponse.json({ inquiries });
+  const status = searchParams.get("status");
+  const filter: any = status ? { status } : {};
+  const inquiries = await Inquiry.find(filter).sort({ createdAt: -1 }).lean();
+  const withCounts = inquiries.map((i: any) => ({ ...i, id: i._id.toString(), _count: { items: i.items?.length ?? 0 } }));
+  return NextResponse.json({ inquiries: withCounts });
 }

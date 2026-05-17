@@ -1,49 +1,42 @@
 import { NextResponse } from "next/server";
 import { requireAdmin, unauthorized } from "@/lib/admin/require-admin";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Category } from "@/models/Category";
+import { Product } from "@/models/Product";
 
 export async function GET() {
   const admin = await requireAdmin();
   if (!admin) return unauthorized();
-
-  const categories = await prisma.category.findMany({
-    orderBy: [{ type: "asc" }, { parentId: "asc" }, { name: "asc" }],
-    include: { parent: true, _count: { select: { children: true, products: true } } },
-  });
-
-  return NextResponse.json({ categories });
+  await connectDB();
+  const categories = await Category.find().sort({ type: 1, parentId: 1, name: 1 }).lean();
+  const withCounts = await Promise.all(categories.map(async (c: any) => {
+    const [childCount, productCount] = await Promise.all([
+      Category.countDocuments({ parentId: c._id }),
+      Product.countDocuments({ categoryIds: c._id }),
+    ]);
+    return { ...c, id: c._id.toString(), _count: { children: childCount, products: productCount } };
+  }));
+  return NextResponse.json({ categories: withCounts });
 }
 
 export async function POST(req: Request) {
   const admin = await requireAdmin();
   if (!admin) return unauthorized();
-
+  await connectDB();
   try {
     const body = await req.json();
     const { type, name, slug, description, parentId } = body;
-
-    if (!type || !name?.trim() || !slug?.trim()) {
-      return NextResponse.json({ error: "type, name, and slug are required" }, { status: 400 });
-    }
-    if (!["INSTRUMENT", "SURGERY"].includes(type)) {
-      return NextResponse.json({ error: "type must be INSTRUMENT or SURGERY" }, { status: 400 });
-    }
-
-    const category = await prisma.category.create({
-      data: {
-        type,
-        name: name.trim(),
-        slug: slug.trim().toLowerCase().replace(/\s+/g, "-"),
-        description: description?.trim() || null,
-        parentId: parentId || null,
-      },
+    if (!type || !name?.trim() || !slug?.trim()) return NextResponse.json({ error: "type, name, and slug are required" }, { status: 400 });
+    if (!["INSTRUMENT", "SURGERY"].includes(type)) return NextResponse.json({ error: "type must be INSTRUMENT or SURGERY" }, { status: 400 });
+    const category = await Category.create({
+      type, name: name.trim(),
+      slug: slug.trim().toLowerCase().replace(/\s+/g, "-"),
+      description: description?.trim() || undefined,
+      parentId: parentId || null,
     });
-
     return NextResponse.json({ category }, { status: 201 });
   } catch (e: any) {
-    if (e.code === "P2002") {
-      return NextResponse.json({ error: "Slug already in use for this category type" }, { status: 409 });
-    }
+    if (e.code === 11000) return NextResponse.json({ error: "Slug already in use for this category type" }, { status: 409 });
     return NextResponse.json({ error: e instanceof Error ? e.message : "Bad request" }, { status: 400 });
   }
 }

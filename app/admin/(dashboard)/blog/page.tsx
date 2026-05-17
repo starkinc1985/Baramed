@@ -1,14 +1,16 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { BlogPost } from "@/models/BlogPost";
 
 export const metadata: Metadata = { title: "Blog Posts | Admin" };
 
 export default async function AdminBlogPage() {
-  const posts = await prisma.blogPost.findMany({
-    orderBy: { createdAt: "desc" },
-    select: { id: true, title: true, slug: true, published: true, author: true, publishedAt: true, createdAt: true },
-  });
+  await connectDB();
+
+  const posts = await BlogPost.find({}).sort({ createdAt: -1 })
+    .select("title slug published author publishedAt createdAt")
+    .lean();
 
   return (
     <div>
@@ -34,8 +36,8 @@ export default async function AdminBlogPage() {
             </tr>
           </thead>
           <tbody>
-            {posts.map((p) => (
-              <tr key={p.id} className="border-b border-stroke last:border-0 dark:border-strokedark">
+            {(posts as any[]).map((p) => (
+              <tr key={p._id.toString()} className="border-b border-stroke last:border-0 dark:border-strokedark">
                 <td className="px-4 py-3">
                   <p className="font-medium text-black dark:text-white line-clamp-1">{p.title}</p>
                   <p className="font-mono text-xs text-waterloo">{p.slug}</p>
@@ -52,7 +54,7 @@ export default async function AdminBlogPage() {
                   {new Date(p.createdAt).toLocaleDateString()}
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <Link href={`/admin/blog/${p.id}`} className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white">
+                  <Link href={`/admin/blog/${p._id.toString()}`} className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white">
                     Edit
                   </Link>
                 </td>

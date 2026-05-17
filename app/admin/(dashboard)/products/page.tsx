@@ -1,19 +1,24 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Product } from "@/models/Product";
+import { Category } from "@/models/Category";
 import ImportButton from "./ImportButton";
 
 export const metadata: Metadata = { title: "Products | Admin" };
 
 export default async function AdminProductsPage() {
-  const products = await prisma.product.findMany({
-    orderBy: [{ featured: "desc" }, { name: "asc" }],
-    include: {
-      images: { orderBy: { sortOrder: "asc" }, take: 1 },
-      categories: { include: { category: { include: { parent: true } } } },
-    },
-  });
+  await connectDB();
+
+  const products = await Product.find({}).sort({ featured: -1, name: 1 }).lean();
+
+  // Gather all category IDs across all products
+  const allCatIds = [...new Set(products.flatMap((p: any) => (p.categoryIds ?? []).map((id: any) => id.toString())))];
+  const categories = allCatIds.length > 0
+    ? await Category.find({ _id: { $in: allCatIds } }).lean()
+    : [];
+  const catMap = new Map(categories.map((c: any) => [c._id.toString(), c]));
 
   return (
     <div>
@@ -45,12 +50,12 @@ export default async function AdminProductsPage() {
             </tr>
           </thead>
           <tbody>
-            {products.map((p) => {
-              const thumb = p.images[0]?.url;
-              const cats = p.categories.map((pc) => pc.category);
-              const topCat = cats.find((c) => c.parentId === null);
+            {(products as any[]).map((p) => {
+              const thumb = p.images?.[0]?.url;
+              const cats = (p.categoryIds ?? []).map((id: any) => catMap.get(id.toString())).filter(Boolean);
+              const topCat = (cats as any[]).find((c) => !c.parentId);
               return (
-                <tr key={p.id} className="border-b border-stroke last:border-0 dark:border-strokedark">
+                <tr key={p._id.toString()} className="border-b border-stroke last:border-0 dark:border-strokedark">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 shrink-0 overflow-hidden rounded bg-gray-100 dark:bg-strokedark">
@@ -79,7 +84,7 @@ export default async function AdminProductsPage() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link
-                      href={`/admin/products/${p.id}`}
+                      href={`/admin/products/${p._id.toString()}`}
                       className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white"
                     >
                       Edit

@@ -1,24 +1,23 @@
 import { NextResponse } from "next/server";
-
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Product } from "@/models/Product";
+import { Category } from "@/models/Category";
+import { mapMongoProductToUiProduct } from "@/lib/mappers/product";
 
 export async function GET(
   _req: Request,
   { params }: { params: { id: string } },
 ) {
-  const product = await prisma.product.findUnique({
-    where: { id: params.id },
-    include: {
-      images: { orderBy: { sortOrder: "asc" } },
-      specs: { orderBy: { key: "asc" } },
-      categories: { include: { category: { include: { parent: true } } } },
-    },
-  });
+  await connectDB();
 
+  const product = await Product.findById(params.id).lean();
   if (!product) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  return NextResponse.json({ product });
-}
+  const categories = (product as any).categoryIds?.length
+    ? await Category.find({ _id: { $in: (product as any).categoryIds } }).lean()
+    : [];
 
+  return NextResponse.json({ product: mapMongoProductToUiProduct(product, categories as any) });
+}

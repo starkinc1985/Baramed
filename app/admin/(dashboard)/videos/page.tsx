@@ -1,11 +1,14 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Video } from "@/models/Video";
 
 export const metadata: Metadata = { title: "Videos | Admin" };
 
 export default async function AdminVideosPage() {
-  const videos = await prisma.video.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] });
+  await connectDB();
+
+  const videos = await Video.find({}).sort({ sortOrder: 1, createdAt: -1 }).lean();
 
   return (
     <div>
@@ -31,8 +34,8 @@ export default async function AdminVideosPage() {
             </tr>
           </thead>
           <tbody>
-            {videos.map((v) => (
-              <tr key={v.id} className="border-b border-stroke last:border-0 dark:border-strokedark">
+            {(videos as any[]).map((v) => (
+              <tr key={v._id.toString()} className="border-b border-stroke last:border-0 dark:border-strokedark">
                 <td className="px-4 py-3 font-medium text-black dark:text-white">{v.title}</td>
                 <td className="px-4 py-3 font-mono text-xs text-waterloo">{v.youtubeId}</td>
                 <td className="px-4 py-3">
@@ -42,7 +45,7 @@ export default async function AdminVideosPage() {
                 </td>
                 <td className="px-4 py-3 text-sm text-waterloo">{v.sortOrder}</td>
                 <td className="px-4 py-3 text-right">
-                  <Link href={`/admin/videos/${v.id}`} className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white">
+                  <Link href={`/admin/videos/${v._id.toString()}`} className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white">
                     Edit
                   </Link>
                 </td>

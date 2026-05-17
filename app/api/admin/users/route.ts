@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { UserRole } from "@prisma/client";
-
 import { verifyAdminToken } from "@/lib/auth/admin-jwt";
 import { ADMIN_TOKEN_COOKIE } from "@/lib/auth/constants";
 import { hashPassword } from "@/lib/auth/password";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { User } from "@/models/User";
 import { optionalString, requiredString } from "@/lib/validators";
 
 async function requireAdmin() {
@@ -13,63 +12,36 @@ async function requireAdmin() {
   if (!token) return null;
   const p = await verifyAdminToken(token);
   if (!p) return null;
-  const user = await prisma.user.findUnique({ where: { id: p.sub } });
-  if (!user || user.role !== UserRole.ADMINISTRATOR || !user.passwordHash) {
-    return null;
-  }
+  await connectDB();
+  const user = await User.findById(p.sub).lean();
+  if (!user || user.role !== "ADMINISTRATOR" || !user.passwordHash) return null;
   return user;
 }
 
 export async function GET() {
   const admin = await requireAdmin();
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  const users = await prisma.user.findMany({
-    orderBy: { createdAt: "asc" },
-    select: { id: true, email: true, name: true, role: true, createdAt: true },
-  });
+  await connectDB();
+  const users = await User.find().sort({ createdAt: 1 }).select("email name role createdAt").lean();
   return NextResponse.json({ users });
 }
 
 export async function POST(req: Request) {
   const admin = await requireAdmin();
-  if (!admin) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  await connectDB();
   try {
     const body = await req.json();
     const email = requiredString(body.email, "email").toLowerCase();
     const password = requiredString(body.password, "password");
-    if (password.length < 8) {
-      return NextResponse.json(
-        { error: "Password must be at least 8 characters" },
-        { status: 400 },
-      );
-    }
+    if (password.length < 8) return NextResponse.json({ error: "Password must be at least 8 characters" }, { status: 400 });
     const name = optionalString(body.name);
-
-    const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) {
-      return NextResponse.json({ error: "Email already in use" }, { status: 409 });
-    }
-
+    const existing = await User.findOne({ email });
+    if (existing) return NextResponse.json({ error: "Email already in use" }, { status: 409 });
     const passwordHash = await hashPassword(password);
-    const user = await prisma.user.create({
-      data: {
-        email,
-        name,
-        passwordHash,
-        role: UserRole.ADMINISTRATOR,
-      },
-      select: { id: true, email: true, name: true, role: true, createdAt: true },
-    });
-
-    return NextResponse.json({ user });
+    const user = await User.create({ email, name, passwordHash, role: "ADMINISTRATOR" });
+    return NextResponse.json({ user: { id: user._id.toString(), email: user.email, name: user.name, role: user.role, createdAt: user.createdAt } });
   } catch (e) {
-    return NextResponse.json(
-      { error: e instanceof Error ? e.message : "Bad request" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: e instanceof Error ? e.message : "Bad request" }, { status: 400 });
   }
 }

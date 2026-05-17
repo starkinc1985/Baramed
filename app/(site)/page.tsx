@@ -8,7 +8,8 @@ import CTA from "@/components/CTA";
 import FAQ from "@/components/FAQ";
 import Blog from "@/components/Blog";
 import { getFeaturedProductsFromDb } from "@/lib/catalog";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Faq } from "@/models/Faq";
 import Link from "next/link";
 import ProductCard from "@/components/Product/ProductCard";
 import AnimateOnScroll from "@/components/Common/AnimateOnScroll";
@@ -20,13 +21,16 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const [featuredProducts, faqs] = await Promise.all([
+  await connectDB();
+  const [featuredProducts, rawFaqs] = await Promise.all([
     getFeaturedProductsFromDb(4),
-    prisma.faq.findMany({
-      where: { published: true },
-      orderBy: { sortOrder: "asc" },
-    }),
+    Faq.find({ published: true }).sort({ sortOrder: 1 }).lean(),
   ]);
+  const faqs = (rawFaqs as any[]).map((f) => ({
+    id: f._id.toString(),
+    question: f.question,
+    answer: f.answer,
+  }));
 
   return (
     <main>

@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Inquiry } from "@/models/Inquiry";
 
 export const metadata: Metadata = { title: "Inquiries | Admin" };
 
@@ -11,10 +12,9 @@ const statusBadge = (status: string) => {
 };
 
 export default async function AdminInquiriesPage() {
-  const inquiries = await prisma.inquiry.findMany({
-    orderBy: { createdAt: "desc" },
-    include: { _count: { select: { items: true } } },
-  });
+  await connectDB();
+
+  const inquiries = await Inquiry.find({}).sort({ createdAt: -1 }).lean();
 
   return (
     <div>
@@ -38,8 +38,8 @@ export default async function AdminInquiriesPage() {
             </tr>
           </thead>
           <tbody>
-            {inquiries.map((inq) => (
-              <tr key={inq.id} className="border-b border-stroke last:border-0 dark:border-strokedark">
+            {(inquiries as any[]).map((inq) => (
+              <tr key={inq._id.toString()} className="border-b border-stroke last:border-0 dark:border-strokedark">
                 <td className="px-4 py-3">
                   <p className="font-medium text-black dark:text-white">{inq.name}</p>
                   <p className="text-xs text-waterloo">{inq.email}</p>
@@ -52,10 +52,10 @@ export default async function AdminInquiriesPage() {
                     {inq.status.replace("_", " ")}
                   </span>
                 </td>
-                <td className="hidden px-4 py-3 text-sm text-waterloo md:table-cell">{inq._count.items}</td>
+                <td className="hidden px-4 py-3 text-sm text-waterloo md:table-cell">{(inq.items ?? []).length}</td>
                 <td className="hidden px-4 py-3 text-xs text-waterloo lg:table-cell">{new Date(inq.createdAt).toLocaleDateString()}</td>
                 <td className="px-4 py-3 text-right">
-                  <Link href={`/admin/inquiries/${inq.id}`} className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white">
+                  <Link href={`/admin/inquiries/${inq._id.toString()}`} className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white">
                     View
                   </Link>
                 </td>

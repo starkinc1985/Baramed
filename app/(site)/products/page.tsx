@@ -4,7 +4,6 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import {
   getAllProductsForCatalogPage,
-  getFeaturedProductsFromDb,
   getInstrumentTypeCategoriesFromDb,
   getSurgeryTypeCategoriesFromDb,
 } from "@/lib/catalog";
@@ -17,19 +16,18 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductsPage() {
-  const [instrumentTypeCategories, surgeryTypeCategories, featuredProducts, all] =
+  const [instrumentTypeCategories, surgeryTypeCategories, all] =
     await Promise.all([
       getInstrumentTypeCategoriesFromDb(),
       getSurgeryTypeCategoriesFromDb(),
-      getFeaturedProductsFromDb(50),
       getAllProductsForCatalogPage(),
     ]);
 
-  const displayProducts =
-    featuredProducts.length > 0 ? featuredProducts : all.slice(0, 8);
+  const featured = all.filter((p) => p.featured);
 
   return (
     <main className="pt-20">
+      {/* Header */}
       <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <Breadcrumb
@@ -47,7 +45,7 @@ export default async function ProductsPage() {
             </h1>
             <p className="mx-auto mb-3 max-w-[600px] text-sm text-waterloo">
               Browse our comprehensive range of high-quality surgical instruments.
-              Find products by instrument type or surgical specialty.
+              Find products by instrument type, surgical specialty, or view all products below.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-waterloo">
               {["Premium Quality", "ISO Certified", "Made in Germany"].map((label) => (
@@ -63,38 +61,39 @@ export default async function ProductsPage() {
         </div>
       </section>
 
-      <section className="bg-gray-50 py-12 dark:bg-blacksection lg:py-16">
+      {/* Browse by Category */}
+      <section className="bg-gray-50 py-10 dark:bg-blacksection">
         <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
             {/* By Instrument Type */}
             <div className="rounded-lg border border-stroke bg-white p-6 shadow-sm dark:border-strokedark dark:bg-blacksection">
               <div className="mb-5 flex items-start justify-between">
                 <div>
-                  <h2 className="mb-1 text-xl font-bold text-black dark:text-white lg:text-2xl">
+                  <h2 className="mb-1 text-xl font-bold text-black dark:text-white">
                     Browse by Instrument Type
                   </h2>
                   <p className="text-sm text-waterloo">{instrumentTypeCategories.length} categories available</p>
                 </div>
                 <Link
                   href="/products/by-instrument-type"
-                  className="flex-shrink-0 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-primaryho lg:px-5 lg:py-2.5"
+                  className="flex-shrink-0 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition hover:bg-primaryho"
                 >
                   View All
                 </Link>
               </div>
               <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {instrumentTypeCategories.map((category) => (
+                {instrumentTypeCategories.slice(0, 6).map((category) => (
                   <Link
                     key={category.id}
                     href={`/products/by-instrument-type/${category.slug}`}
-                    className="group flex min-h-[90px] flex-col items-center justify-center rounded-lg border border-stroke bg-white p-4 text-center transition-all hover:border-primary hover:bg-primary/5 dark:border-strokedark dark:bg-blacksection"
+                    className="group flex min-h-[80px] flex-col items-center justify-center rounded-lg border border-stroke bg-white p-3 text-center transition-all hover:border-primary hover:bg-primary/5 dark:border-strokedark dark:bg-blacksection"
                   >
-                    <h3 className="text-sm font-semibold leading-tight text-black transition-colors group-hover:text-primary dark:text-white">
+                    <h3 className="text-xs font-semibold leading-tight text-black transition-colors group-hover:text-primary dark:text-white">
                       {category.name}
                     </h3>
-                    {category.subcategories && (
-                      <p className="mt-1.5 text-xs font-medium text-primary">
-                        {category.subcategories.length} {category.subcategories.length === 1 ? "subcategory" : "subcategories"}
+                    {category.subcategories && category.subcategories.length > 0 && (
+                      <p className="mt-1 text-[10px] font-medium text-primary">
+                        {category.subcategories.length} sub
                       </p>
                     )}
                   </Link>
@@ -106,33 +105,28 @@ export default async function ProductsPage() {
             <div className="rounded-lg border border-stroke bg-white p-6 shadow-sm dark:border-strokedark dark:bg-blacksection">
               <div className="mb-5 flex items-start justify-between">
                 <div>
-                  <h2 className="mb-1 text-xl font-bold text-black dark:text-white lg:text-2xl">
+                  <h2 className="mb-1 text-xl font-bold text-black dark:text-white">
                     Browse by Surgery Type
                   </h2>
                   <p className="text-sm text-waterloo">{surgeryTypeCategories.length} specialties available</p>
                 </div>
                 <Link
                   href="/products/by-surgery-type"
-                  className="flex-shrink-0 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-all duration-300 hover:bg-primaryho lg:px-5 lg:py-2.5"
+                  className="flex-shrink-0 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition hover:bg-primaryho"
                 >
                   View All
                 </Link>
               </div>
               <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-                {surgeryTypeCategories.map((category) => (
+                {surgeryTypeCategories.slice(0, 6).map((category) => (
                   <Link
                     key={category.id}
                     href={`/products/by-surgery-type/${category.slug}`}
-                    className="group flex min-h-[90px] flex-col items-center justify-center rounded-lg border border-stroke bg-white p-4 text-center transition-all hover:border-primary hover:bg-primary/5 dark:border-strokedark dark:bg-blacksection"
+                    className="group flex min-h-[80px] flex-col items-center justify-center rounded-lg border border-stroke bg-white p-3 text-center transition-all hover:border-primary hover:bg-primary/5 dark:border-strokedark dark:bg-blacksection"
                   >
-                    <h3 className="text-sm font-semibold leading-tight text-black transition-colors group-hover:text-primary dark:text-white">
+                    <h3 className="text-xs font-semibold leading-tight text-black transition-colors group-hover:text-primary dark:text-white">
                       {category.name}
                     </h3>
-                    {category.subcategories && (
-                      <p className="mt-1.5 text-xs font-medium text-primary">
-                        {category.subcategories.length} {category.subcategories.length === 1 ? "type" : "types"}
-                      </p>
-                    )}
                   </Link>
                 ))}
               </div>
@@ -141,32 +135,48 @@ export default async function ProductsPage() {
         </div>
       </section>
 
-      {displayProducts.length > 0 && (
-        <section className="border-b border-stroke bg-white py-6 dark:border-strokedark dark:bg-blacksection">
+      {/* Featured Products */}
+      {featured.length > 0 && (
+        <section className="border-t border-stroke bg-white py-10 dark:border-strokedark dark:bg-blacksection">
           <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
-            <div className="mb-4 text-center">
-              <h2 className="mb-2 text-xl font-bold text-black dark:text-white lg:text-2xl">
-                {featuredProducts.length > 0 ? "Featured Products" : "Popular Products"}
+            <div className="mb-6 flex items-center justify-between">
+              <h2 className="text-xl font-bold text-black dark:text-white lg:text-2xl">
+                Featured Products
               </h2>
+              <span className="text-sm text-waterloo">{featured.length} products</span>
             </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {displayProducts.map((product) => (
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {featured.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
-            {displayProducts.length < all.length && (
-              <div className="mt-4 text-center">
-                <Link
-                  href="/products/by-instrument-type"
-                  className="inline-flex items-center gap-1.5 rounded border border-primary bg-transparent px-4 py-2 text-xs font-medium text-primary transition-colors hover:bg-primary hover:text-white"
-                >
-                  View All Products
-                </Link>
-              </div>
-            )}
           </div>
         </section>
       )}
+
+      {/* All Products */}
+      <section className="border-t border-stroke bg-gray-50 py-10 dark:border-strokedark dark:bg-blacksection">
+        <div className="mx-auto max-w-c-1315 px-4 md:px-8 xl:px-0">
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-xl font-bold text-black dark:text-white lg:text-2xl">
+              All Products
+            </h2>
+            <span className="text-sm text-waterloo">{all.length} products</span>
+          </div>
+
+          {all.length === 0 ? (
+            <div className="rounded-xl border border-stroke bg-white py-16 text-center dark:border-strokedark dark:bg-blacksection">
+              <p className="text-waterloo">No products available yet.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {all.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
     </main>
   );
 }

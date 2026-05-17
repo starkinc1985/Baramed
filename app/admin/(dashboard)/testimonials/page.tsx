@@ -1,11 +1,14 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Testimonial } from "@/models/Testimonial";
 
 export const metadata: Metadata = { title: "Testimonials | Admin" };
 
 export default async function AdminTestimonialsPage() {
-  const testimonials = await prisma.testimonial.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] });
+  await connectDB();
+
+  const testimonials = await Testimonial.find({}).sort({ sortOrder: 1, createdAt: -1 }).lean();
 
   return (
     <div>
@@ -31,8 +34,8 @@ export default async function AdminTestimonialsPage() {
             </tr>
           </thead>
           <tbody>
-            {testimonials.map((t) => (
-              <tr key={t.id} className="border-b border-stroke last:border-0 dark:border-strokedark">
+            {(testimonials as any[]).map((t) => (
+              <tr key={t._id.toString()} className="border-b border-stroke last:border-0 dark:border-strokedark">
                 <td className="px-4 py-3">
                   <p className="font-medium text-black dark:text-white">{t.name}</p>
                   {t.designation && <p className="text-xs text-waterloo">{t.designation}</p>}
@@ -45,7 +48,7 @@ export default async function AdminTestimonialsPage() {
                   )}
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <Link href={`/admin/testimonials/${t.id}`} className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white">
+                  <Link href={`/admin/testimonials/${t._id.toString()}`} className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white">
                     Edit
                   </Link>
                 </td>

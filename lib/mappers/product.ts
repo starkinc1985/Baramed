@@ -1,41 +1,35 @@
 import type { Product } from "@/types/product";
 import { DEFAULT_COMPLIANCE } from "@/lib/staticCompliance";
-import type { Prisma } from "@prisma/client";
+import type { IProduct } from "@/models/Product";
+import type { ICategory } from "@/models/Category";
 
-export type PrismaProductForUi = Prisma.ProductGetPayload<{
-  include: {
-    images: true;
-    specs: true;
-    categories: { include: { category: { include: { parent: true } } } };
-  };
-}>;
+export type MongoProductForUi = IProduct & {
+  _categories?: ICategory[];
+};
 
-export function mapPrismaProductToUiProduct(
-  p: PrismaProductForUi,
+export function mapMongoProductToUiProduct(
+  p: any,
+  categories: ICategory[] = [],
 ): Product {
-  const images = p.images
+  const images = (p.images ?? [])
     .slice()
-    .sort((a, b) => a.sortOrder - b.sortOrder)
-    .map((i) => i.url);
+    .sort((a: any, b: any) => a.sortOrder - b.sortOrder)
+    .map((i: any) => i.url);
 
   const specifications: Product["specifications"] = {};
-  for (const spec of p.specs) {
+  for (const spec of p.specs ?? []) {
     specifications[spec.key] = spec.value;
   }
 
-  const linked = p.categories.map((pc) => pc.category);
-  const instrumentRows = linked.filter((c) => c.type === "INSTRUMENT");
-  const surgeryRows = linked.filter((c) => c.type === "SURGERY");
+  const instrumentRows = categories.filter((c) => c.type === "INSTRUMENT");
+  const surgeryRows = categories.filter((c) => c.type === "SURGERY");
 
-  const topInstrument = instrumentRows.find((c) => c.parentId === null);
-  const subInstrument = instrumentRows.find((c) => c.parentId !== null);
-
-  const topSurgery = surgeryRows
-    .filter((c) => c.parentId === null)
-    .map((c) => c.slug);
+  const topInstrument = instrumentRows.find((c) => !c.parentId);
+  const subInstrument = instrumentRows.find((c) => c.parentId);
+  const topSurgery = surgeryRows.filter((c) => !c.parentId).map((c) => c.slug);
 
   return {
-    id: p.id,
+    id: p._id?.toString() ?? p.id,
     name: p.name,
     productCode: p.productCode,
     description: p.description,

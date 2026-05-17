@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Product } from "@/types/product";
-import { mapPrismaProductToUiProduct } from "@/lib/mappers/product";
+import { mapMongoProductToUiProduct } from "@/lib/mappers/product";
 
 interface SearchProps {
   onClose?: () => void;
@@ -38,7 +38,7 @@ export default function Search({ onClose }: SearchProps) {
       }
       const data = await res.json();
       const mapped: Product[] = (data.products ?? []).map((p: any) =>
-        mapPrismaProductToUiProduct(p),
+        mapMongoProductToUiProduct(p),
       );
       if (cancelled) return;
       setResults(mapped);

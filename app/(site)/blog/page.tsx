@@ -1,6 +1,7 @@
 import BlogItem from "@/components/Blog/BlogItem";
 import { Metadata } from "next";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { BlogPost } from "@/models/BlogPost";
 
 export const metadata: Metadata = {
   title: "Blog | BÄRAMED INSTRUMENTE GMBH",
@@ -8,13 +9,11 @@ export const metadata: Metadata = {
 };
 
 const BlogPage = async () => {
-  const posts = await prisma.blogPost.findMany({
-    where: { published: true },
-    orderBy: { publishedAt: "desc" },
-  });
+  await connectDB();
+  const posts = await BlogPost.find({ published: true }).sort({ publishedAt: -1 }).lean();
 
-  const blogs = posts.map((p) => ({
-    _id: p.id as any,
+  const blogs = (posts as any[]).map((p) => ({
+    _id: p._id,
     title: p.title,
     mainImage: p.coverImage || "/images/blog/blog-01.png",
     metadata: p.excerpt || "",

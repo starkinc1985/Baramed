@@ -1,11 +1,14 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Faq } from "@/models/Faq";
 
 export const metadata: Metadata = { title: "FAQs | Admin" };
 
 export default async function AdminFaqsPage() {
-  const faqs = await prisma.faq.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] });
+  await connectDB();
+
+  const faqs = await Faq.find({}).sort({ sortOrder: 1, createdAt: -1 }).lean();
 
   return (
     <div>
@@ -31,8 +34,8 @@ export default async function AdminFaqsPage() {
             </tr>
           </thead>
           <tbody>
-            {faqs.map((f) => (
-              <tr key={f.id} className="border-b border-stroke last:border-0 dark:border-strokedark">
+            {(faqs as any[]).map((f) => (
+              <tr key={f._id.toString()} className="border-b border-stroke last:border-0 dark:border-strokedark">
                 <td className="px-4 py-3 font-medium text-black dark:text-white line-clamp-1 max-w-xs">{f.question}</td>
                 <td className="hidden px-4 py-3 text-sm text-waterloo md:table-cell">{f.category ?? "—"}</td>
                 <td className="px-4 py-3">
@@ -44,7 +47,7 @@ export default async function AdminFaqsPage() {
                 </td>
                 <td className="px-4 py-3 text-sm text-waterloo">{f.sortOrder}</td>
                 <td className="px-4 py-3 text-right">
-                  <Link href={`/admin/faqs/${f.id}`} className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white">
+                  <Link href={`/admin/faqs/${f._id.toString()}`} className="rounded-lg border border-stroke px-3 py-1.5 text-xs font-medium text-black transition hover:border-primary hover:text-primary dark:border-strokedark dark:text-white">
                     Edit
                   </Link>
                 </td>

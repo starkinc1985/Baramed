@@ -1,10 +1,11 @@
 import { redirect } from "next/navigation";
-
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { User } from "@/models/User";
 import SetupForm from "./SetupForm";
 
 export default async function AdminSetupPage() {
-  const count = await prisma.user.count();
+  await connectDB();
+  const count = await User.countDocuments();
   if (count > 0) {
     redirect("/admin/login");
   }

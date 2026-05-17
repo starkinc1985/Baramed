@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Faq } from "@/models/Faq";
 
 export async function GET() {
-  const faqs = await prisma.faq.findMany({
-    where: { published: true },
-    orderBy: { sortOrder: "asc" },
-  });
+  await connectDB();
+
+  const faqs = await Faq.find({ published: true }).sort({ sortOrder: 1 }).lean();
 
   return NextResponse.json({ faqs });
 }

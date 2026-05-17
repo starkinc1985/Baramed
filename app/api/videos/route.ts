@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Video } from "@/models/Video";
 
 export async function GET() {
-  const videos = await prisma.video.findMany({
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-  });
+  await connectDB();
+
+  const videos = await Video.find().sort({ sortOrder: 1, createdAt: -1 }).lean();
 
   return NextResponse.json({ videos });
 }

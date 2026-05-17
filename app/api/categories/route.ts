@@ -1,24 +1,19 @@
 import { NextResponse } from "next/server";
-
-import { prisma } from "@/lib/prisma";
-import { CategoryType } from "@prisma/client";
+import { connectDB } from "@/lib/db";
+import { Category } from "@/models/Category";
 
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const type = url.searchParams.get("type");
 
-  const where =
-    type === "INSTRUMENT"
-      ? { type: CategoryType.INSTRUMENT }
-      : type === "SURGERY"
-        ? { type: CategoryType.SURGERY }
-        : undefined;
+  await connectDB();
 
-  const categories = await prisma.category.findMany({
-    where,
-    orderBy: [{ type: "asc" }, { name: "asc" }],
-  });
+  const query: any = {};
+  if (type === "INSTRUMENT" || type === "SURGERY") {
+    query.type = type;
+  }
+
+  const categories = await Category.find(query).sort({ type: 1, name: 1 }).lean();
 
   return NextResponse.json({ categories });
 }
-

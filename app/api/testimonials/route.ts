@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Testimonial } from "@/models/Testimonial";
 
 export async function GET() {
-  const testimonials = await prisma.testimonial.findMany({
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-  });
+  await connectDB();
+
+  const testimonials = await Testimonial.find().sort({ sortOrder: 1, createdAt: -1 }).lean();
 
   return NextResponse.json({ testimonials });
 }

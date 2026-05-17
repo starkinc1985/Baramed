@@ -2,8 +2,9 @@ import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
-import { DownloadCategory } from "@prisma/client";
+import { connectDB } from "@/lib/db";
+import { Download } from "@/models/Download";
+import type { DownloadCategory } from "@/models/Download";
 
 export const metadata: Metadata = {
   title: "Downloads | BÄRAMED INSTRUMENTE GMBH",
@@ -28,12 +29,10 @@ const categoryOrder: DownloadCategory[] = [
 ];
 
 export default async function DownloadsPage() {
-  const downloads = await prisma.download.findMany({
-    where: { published: true },
-    orderBy: [{ category: "asc" }, { sortOrder: "asc" }],
-  });
+  await connectDB();
+  const downloads = await Download.find({ published: true }).sort({ category: 1, sortOrder: 1 }).lean();
 
-  const grouped = downloads.reduce<Record<string, typeof downloads>>(
+  const grouped = (downloads as any[]).reduce<Record<string, typeof downloads>>(
     (acc, item) => {
       if (!acc[item.category]) acc[item.category] = [];
       acc[item.category].push(item);
@@ -70,9 +69,9 @@ export default async function DownloadsPage() {
                 {categoryLabels[category]}
               </h2>
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {grouped[category].map((item) => (
+                {(grouped[category] as any[]).map((item) => (
                   <div
-                    key={item.id}
+                    key={item._id.toString()}
                     className="rounded-lg border border-stroke bg-white p-6 shadow-1 dark:border-strokedark dark:bg-blacksection"
                   >
                     <div className="mb-4 flex items-start justify-between">

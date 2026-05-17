@@ -1,6 +1,15 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Product } from "@/models/Product";
+import { Category } from "@/models/Category";
+import { BlogPost } from "@/models/BlogPost";
+import { Testimonial } from "@/models/Testimonial";
+import { Faq } from "@/models/Faq";
+import { Download } from "@/models/Download";
+import { Video } from "@/models/Video";
+import { Inquiry } from "@/models/Inquiry";
+import { User } from "@/models/User";
 
 export const metadata: Metadata = { title: "Dashboard | Admin" };
 
@@ -16,18 +25,20 @@ const statCards = [
 ];
 
 export default async function AdminDashboardPage() {
+  await connectDB();
+
   const [products, categories, blogPosts, testimonials, faqs, downloads, videos, inquiries, users, newInquiries] =
     await Promise.all([
-      prisma.product.count(),
-      prisma.category.count(),
-      prisma.blogPost.count(),
-      prisma.testimonial.count(),
-      prisma.faq.count(),
-      prisma.download.count(),
-      prisma.video.count(),
-      prisma.inquiry.count(),
-      prisma.user.count(),
-      prisma.inquiry.count({ where: { status: "NEW" } }),
+      Product.countDocuments(),
+      Category.countDocuments(),
+      BlogPost.countDocuments(),
+      Testimonial.countDocuments(),
+      Faq.countDocuments(),
+      Download.countDocuments(),
+      Video.countDocuments(),
+      Inquiry.countDocuments(),
+      User.countDocuments(),
+      Inquiry.countDocuments({ status: "NEW" }),
     ]);
 
   const counts = [products, categories, blogPosts, testimonials, faqs, downloads, videos, users];

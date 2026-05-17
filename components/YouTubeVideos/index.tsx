@@ -1,13 +1,21 @@
 import SectionHeader from "../Common/SectionHeader";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { Video } from "@/models/Video";
 import VideoGrid from "./VideoGrid";
 
 const YouTubeVideos = async () => {
-  const videos = await prisma.video.findMany({
-    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-  });
+  await connectDB();
+  const rawVideos = await Video.find({}).sort({ sortOrder: 1, createdAt: -1 }).lean();
 
-  if (videos.length === 0) return null;
+  if (rawVideos.length === 0) return null;
+
+  const videos = (rawVideos as any[]).map((v) => ({
+    id: v._id.toString(),
+    youtubeId: v.youtubeId,
+    title: v.title,
+    description: v.description ?? null,
+    thumbnail: v.thumbnail ?? null,
+  }));
 
   return (
     <section className="border-b border-stroke bg-white py-12 dark:border-strokedark dark:bg-darksectiontwo">

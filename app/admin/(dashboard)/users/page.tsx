@@ -1,14 +1,16 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { connectDB } from "@/lib/db";
+import { User } from "@/models/User";
 
 export const metadata: Metadata = { title: "Users | Admin" };
 
 export default async function AdminUsersPage() {
-  const users = await prisma.user.findMany({
-    orderBy: { createdAt: "asc" },
-    select: { id: true, email: true, name: true, role: true, createdAt: true },
-  });
+  await connectDB();
+
+  const users = await User.find({}).sort({ createdAt: 1 })
+    .select("email name role createdAt")
+    .lean();
 
   return (
     <div>
@@ -33,8 +35,8 @@ export default async function AdminUsersPage() {
             </tr>
           </thead>
           <tbody>
-            {users.map((u) => (
-              <tr key={u.id} className="border-b border-stroke last:border-0 dark:border-strokedark">
+            {(users as any[]).map((u) => (
+              <tr key={u._id.toString()} className="border-b border-stroke last:border-0 dark:border-strokedark">
                 <td className="px-4 py-3 font-medium text-black dark:text-white">{u.email}</td>
                 <td className="hidden px-4 py-3 text-sm text-waterloo md:table-cell">{u.name ?? "—"}</td>
                 <td className="px-4 py-3">
