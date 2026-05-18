@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Metadata } from "next";
 import Hero from "@/components/Hero";
 import Feature from "@/components/Features";

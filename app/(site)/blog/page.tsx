@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import BlogItem from "@/components/Blog/BlogItem";
 import { Metadata } from "next";
 import { connectDB } from "@/lib/db";
