@@ -35,10 +35,7 @@ export type Product = {
 export type ProductVariation = {
   id: string;
   name: string;
-  productCode: string;
-  specifications?: {
-    [key: string]: string;
-  };
+  catalogNumber?: string;
 };
 
 export type Category = {

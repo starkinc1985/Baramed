@@ -28,6 +28,12 @@ export function mapMongoProductToUiProduct(
   const subInstrument = instrumentRows.find((c) => c.parentId);
   const topSurgery = surgeryRows.filter((c) => !c.parentId).map((c) => c.slug);
 
+  const variations = (p.variations ?? []).map((v: any) => ({
+    id: v._id?.toString() ?? v.id ?? v.name,
+    name: v.name,
+    catalogNumber: v.catalogNumber ?? undefined,
+  }));
+
   return {
     id: p._id?.toString() ?? p.id,
     name: p.name,
@@ -40,6 +46,7 @@ export function mapMongoProductToUiProduct(
     surgeryTypes: topSurgery,
     specifications,
     compliance: { ...DEFAULT_COMPLIANCE },
+    variations,
     featured: p.featured,
     inStock: p.inStock,
   };

@@ -27,7 +27,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   if (!existing) return notFound();
   try {
     const body = await req.json();
-    const { name, productCode, description, shortDescription, featured, inStock, imageUrls, specs, categoryIds } = body;
+    const { name, productCode, description, shortDescription, featured, inStock, imageUrls, specs, variations, categoryIds } = body;
     existing.name = name?.trim() ?? existing.name;
     existing.productCode = productCode?.trim() ?? existing.productCode;
     existing.description = description?.trim() ?? existing.description;
@@ -36,6 +36,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     existing.inStock = inStock !== undefined ? Boolean(inStock) : existing.inStock;
     if (imageUrls !== undefined) existing.images = imageUrls.map((url: string, i: number) => ({ url, sortOrder: i }));
     if (specs !== undefined) existing.specs = specs.filter((s: any) => s.key?.trim() && s.value?.trim()).map((s: any) => ({ key: s.key.trim(), value: s.value.trim() }));
+    if (variations !== undefined) existing.variations = variations.filter((v: any) => v.name?.trim()).map((v: any) => ({ name: v.name.trim(), catalogNumber: v.catalogNumber?.trim() || undefined }));
     if (categoryIds !== undefined) existing.categoryIds = categoryIds.filter((id: string) => mongoose.isValidObjectId(id)).map((id: string) => new mongoose.Types.ObjectId(id));
     await existing.save();
     return NextResponse.json({ product: existing.toJSON() });

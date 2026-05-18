@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import InquiryButton from "@/components/Product/InquiryButton";
+import VariationSelector from "@/components/Product/VariationSelector";
 import Breadcrumb from "@/components/Breadcrumb";
 import ProductCard from "@/components/Product/ProductCard";
 import { DEFAULT_COMPLIANCE } from "@/lib/staticCompliance";
@@ -149,6 +150,8 @@ export default async function ProductDetailPage({
                   )}
                 </div>
               </div>
+
+              <VariationSelector variations={product.variations ?? []} />
 
               <InquiryButton product={product} />
             </div>

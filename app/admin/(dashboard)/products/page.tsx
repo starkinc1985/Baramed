@@ -5,6 +5,8 @@ import { connectDB } from "@/lib/db";
 import { Product } from "@/models/Product";
 import { Category } from "@/models/Category";
 import ImportButton from "./ImportButton";
+import ExportButton from "./ExportButton";
+import DeleteAllButton from "./DeleteAllButton";
 
 export const metadata: Metadata = { title: "Products | Admin" };
 
@@ -28,6 +30,8 @@ export default async function AdminProductsPage() {
           <p className="text-sm text-waterloo">{products.length} total</p>
         </div>
         <div className="flex items-center gap-2">
+          <DeleteAllButton />
+          <ExportButton />
           <ImportButton />
           <Link
             href="/admin/products/new"

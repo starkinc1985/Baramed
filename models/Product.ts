@@ -11,6 +11,11 @@ export interface IProductSpec {
   value: string;
 }
 
+export interface IProductVariation {
+  name: string;
+  catalogNumber?: string;
+}
+
 export interface IProduct extends Document {
   name: string;
   productCode: string;
@@ -20,6 +25,7 @@ export interface IProduct extends Document {
   inStock: boolean;
   images: IProductImage[];
   specs: IProductSpec[];
+  variations: IProductVariation[];
   categoryIds: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
@@ -44,6 +50,12 @@ const ProductSchema = new Schema<IProduct>(
       {
         key: { type: String, required: true },
         value: { type: String, required: true },
+      },
+    ],
+    variations: [
+      {
+        name: { type: String, required: true },
+        catalogNumber: { type: String },
       },
     ],
     categoryIds: [{ type: Schema.Types.ObjectId, ref: "Category" }],

@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 type ImportResult = {
   imported: number;
   skipped: number;
+  inFileDuplicates: number;
+  dbDuplicates: number;
   categoriesCreated: number;
   total: number;
 };
@@ -62,16 +64,22 @@ export default function ImportButton() {
       />
 
       {status === "done" && result && (
-        <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-800 dark:border-green-900/30 dark:bg-green-900/20 dark:text-green-300">
-          <span>
-            Imported <strong>{result.imported}</strong> · Skipped{" "}
-            <strong>{result.skipped}</strong>
-            {result.categoriesCreated > 0 &&
-              ` · ${result.categoriesCreated} new categories`}
+        <div className="flex items-start gap-2 rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-xs text-green-800 dark:border-green-900/30 dark:bg-green-900/20 dark:text-green-300">
+          <span className="leading-relaxed">
+            Imported <strong>{result.imported}</strong> of <strong>{result.total}</strong>
+            {result.inFileDuplicates > 0 && (
+              <> · <strong>{result.inFileDuplicates}</strong> duplicate{result.inFileDuplicates !== 1 ? "s" : ""} in file</>
+            )}
+            {result.dbDuplicates > 0 && (
+              <> · <strong>{result.dbDuplicates}</strong> already in DB</>
+            )}
+            {result.categoriesCreated > 0 && (
+              <> · <strong>{result.categoriesCreated}</strong> new {result.categoriesCreated !== 1 ? "categories" : "category"}</>
+            )}
           </span>
           <button
             onClick={() => setStatus("idle")}
-            className="ml-1 font-bold leading-none hover:opacity-70"
+            className="ml-1 shrink-0 font-bold leading-none hover:opacity-70"
           >
             ×
           </button>

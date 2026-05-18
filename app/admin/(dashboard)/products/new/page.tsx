@@ -17,6 +17,7 @@ export default function NewProductPage() {
   const [form, setForm] = useState({ name: "", productCode: "", shortDescription: "", description: "", featured: false, inStock: true });
   const [images, setImages] = useState<string[]>([]);
   const [specs, setSpecs] = useState<{ key: string; value: string }[]>([]);
+  const [variations, setVariations] = useState<{ name: string; catalogNumber: string }[]>([]);
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -52,7 +53,7 @@ export default function NewProductPage() {
       const res = await fetch("/api/admin/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, imageUrls: images, specs, categoryIds: selectedCategoryIds }),
+        body: JSON.stringify({ ...form, imageUrls: images, specs, variations, categoryIds: selectedCategoryIds }),
       });
       const data = await res.json();
       if (!res.ok) { setError(data.error || "Failed"); setStatus("error"); return; }
@@ -129,6 +130,34 @@ export default function NewProductPage() {
           </div>
           <button type="button" onClick={() => setSpecs([...specs, { key: "", value: "" }])} className="mt-3 text-sm font-medium text-primary hover:underline">
             + Add Specification
+          </button>
+        </div>
+
+        {/* Variations */}
+        <div className="rounded-xl border border-stroke bg-white p-6 dark:border-strokedark dark:bg-blacksection">
+          <h2 className="mb-1 text-base font-semibold text-black dark:text-white">Variations</h2>
+          <p className="mb-4 text-xs text-waterloo">Optional size or type options shown on the product page (e.g. 18nm, 16nm, Small, Large).</p>
+          <div className="space-y-2">
+            {variations.map((v, i) => (
+              <div key={i} className="flex gap-2">
+                <input
+                  placeholder="Size / type (e.g. 18 cm, 7&quot;)"
+                  value={v.name}
+                  onChange={(e) => { const n = [...variations]; n[i].name = e.target.value; setVariations(n); }}
+                  className={INPUT}
+                />
+                <input
+                  placeholder="Catalog # (e.g. 01-100-18)"
+                  value={v.catalogNumber}
+                  onChange={(e) => { const n = [...variations]; n[i].catalogNumber = e.target.value; setVariations(n); }}
+                  className={INPUT}
+                />
+                <button type="button" onClick={() => setVariations(variations.filter((_, j) => j !== i))} className="rounded-lg border border-stroke px-3 text-sm text-waterloo hover:border-red-400 hover:text-red-600 dark:border-strokedark">×</button>
+              </div>
+            ))}
+          </div>
+          <button type="button" onClick={() => setVariations([...variations, { name: "", catalogNumber: "" }])} className="mt-3 text-sm font-medium text-primary hover:underline">
+            + Add Variation
           </button>
         </div>
 
