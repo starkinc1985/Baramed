@@ -5,18 +5,55 @@ import { Product } from "@/models/Product";
 import { Category } from "@/models/Category";
 import mongoose from "mongoose";
 
-export async function GET() {
+export async function GET(req: Request) {
   const admin = await requireAdmin();
   if (!admin) return unauthorized();
+
+  const url = new URL(req.url);
+  const skip = Math.max(0, parseInt(url.searchParams.get("skip") ?? "0") || 0);
+  const limit = Math.min(Math.max(1, parseInt(url.searchParams.get("limit") ?? "20") || 20), 100);
+  const q = url.searchParams.get("q")?.trim() ?? "";
+
   await connectDB();
-  const products = await Product.find().sort({ featured: -1, name: 1 }).lean();
-  const withCats = await Promise.all(products.map(async (p: any) => {
-    const cats = p.categoryIds?.length
-      ? await Category.find({ _id: { $in: p.categoryIds } }).lean()
-      : [];
-    return { ...p, id: p._id.toString(), categories: cats };
-  }));
-  return NextResponse.json({ products: withCats });
+
+  const filter = q
+    ? { $or: [{ name: { $regex: q, $options: "i" } }, { productCode: { $regex: q, $options: "i" } }] }
+    : {};
+
+  const [total, products] = await Promise.all([
+    Product.countDocuments(filter),
+    Product.find(filter)
+      .select("name productCode images featured inStock categoryIds")
+      .sort({ featured: -1, name: 1 })
+      .skip(skip)
+      .limit(limit)
+      .lean(),
+  ]);
+
+  // Batch fetch all referenced categories in one query (avoids N+1)
+  const allCatIds = [
+    ...new Set(products.flatMap((p: any) => (p.categoryIds ?? []).map((id: any) => id.toString()))),
+  ];
+  const categories = allCatIds.length > 0
+    ? await Category.find({ _id: { $in: allCatIds } }).select("_id name parentId").lean()
+    : [];
+  const catMap = new Map(categories.map((c: any) => [c._id.toString(), c]));
+
+  const rows = (products as any[]).map((p) => {
+    const cats = (p.categoryIds ?? []).map((id: any) => catMap.get(id.toString())).filter(Boolean);
+    const topCatName = (cats as any[]).find((c: any) => !c.parentId)?.name ?? null;
+    return {
+      id: p._id.toString(),
+      name: p.name,
+      productCode: p.productCode,
+      thumb: (p.images as any[])?.[0]?.url ?? null,
+      featured: p.featured,
+      inStock: p.inStock,
+      topCatName,
+    };
+  });
+
+  return NextResponse.json({ products: rows, total });
 }
 
 export async function DELETE() {

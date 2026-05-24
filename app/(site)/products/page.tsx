@@ -3,11 +3,13 @@ import { Metadata } from "next";
 export const dynamic = "force-dynamic";
 import Link from "next/link";
 import {
-  getAllProductsForCatalogPage,
+  getFeaturedProductsFromDb,
   getInstrumentTypeCategoriesFromDb,
+  getProductsPagedFromDb,
   getSurgeryTypeCategoriesFromDb,
 } from "@/lib/catalog";
 import ProductCard from "@/components/Product/ProductCard";
+import AllProductsGrid from "./AllProductsGrid";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
@@ -16,14 +18,13 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductsPage() {
-  const [instrumentTypeCategories, surgeryTypeCategories, all] =
+  const [instrumentTypeCategories, surgeryTypeCategories, featured, { products: initialProducts, total }] =
     await Promise.all([
       getInstrumentTypeCategoriesFromDb(),
       getSurgeryTypeCategoriesFromDb(),
-      getAllProductsForCatalogPage(),
+      getFeaturedProductsFromDb(12),
+      getProductsPagedFromDb(0, 20),
     ]);
-
-  const featured = all.filter((p) => p.featured);
 
   return (
     <main className="pt-20">
@@ -161,20 +162,10 @@ export default async function ProductsPage() {
             <h2 className="text-xl font-bold text-black dark:text-white lg:text-2xl">
               All Products
             </h2>
-            <span className="text-sm text-waterloo">{all.length} products</span>
+            <span className="text-sm text-waterloo">{total} products</span>
           </div>
 
-          {all.length === 0 ? (
-            <div className="rounded-xl border border-stroke bg-white py-16 text-center dark:border-strokedark dark:bg-blacksection">
-              <p className="text-waterloo">No products available yet.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {all.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          )}
+          <AllProductsGrid initialProducts={initialProducts} total={total} />
         </div>
       </section>
     </main>

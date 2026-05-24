@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
+import TopLoader from "@/components/TopLoader";
 
 import "./globals.css";
 
@@ -20,7 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`dark:bg-black ${inter.className}`}>{children}</body>
+      <body className={`dark:bg-black ${inter.className}`}>
+        <TopLoader />
+        {children}
+      </body>
     </html>
   );
 }

@@ -12,6 +12,8 @@ export async function GET(req: Request) {
   const featured = url.searchParams.get("featured");
   const takeRaw = url.searchParams.get("take");
   const take = takeRaw ? Number(takeRaw) : undefined;
+  const skip = Math.max(0, parseInt(url.searchParams.get("skip") ?? "0") || 0);
+  const limit = Math.min(Math.max(1, parseInt(url.searchParams.get("limit") ?? "0") || (Number.isFinite(take) && take! > 0 ? take! : 0)), 100);
 
   await connectDB();
 
@@ -33,10 +35,14 @@ export async function GET(req: Request) {
     if (cat) filter.categoryIds = cat._id;
   }
 
-  let query = Product.find(filter).sort({ featured: -1, name: 1 });
-  if (Number.isFinite(take) && take! > 0) query = query.limit(take!);
-
-  const products = await query.lean();
+  const [total, products] = await Promise.all([
+    Product.countDocuments(filter),
+    (() => {
+      let q = Product.find(filter).sort({ featured: -1, name: 1 }).skip(skip);
+      if (limit > 0) q = q.limit(limit);
+      return q.lean();
+    })(),
+  ]);
 
   const allCatIds = [...new Set(products.flatMap((p: any) => (p.categoryIds ?? []).map((id: any) => id.toString())))];
   const categories = allCatIds.length > 0
@@ -49,5 +55,5 @@ export async function GET(req: Request) {
     return mapMongoProductToUiProduct(p, cats as any);
   });
 
-  return NextResponse.json({ products: mapped });
+  return NextResponse.json({ products: mapped, total });
 }

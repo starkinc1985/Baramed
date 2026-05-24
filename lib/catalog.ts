@@ -44,6 +44,31 @@ export async function getAllProductsForCatalogPage(): Promise<UiProduct[]> {
   return Promise.all(ps.map(async (p: any) => mapMongoProductToUiProduct(p, await getCats(p.categoryIds))));
 }
 
+export async function getProductsPagedFromDb(
+  skip: number,
+  limit: number,
+): Promise<{ products: UiProduct[]; total: number }> {
+  await connectDB();
+  const [total, ps] = await Promise.all([
+    Product.countDocuments(),
+    Product.find().sort({ featured: -1, name: 1 }).skip(skip).limit(limit).lean(),
+  ]);
+  const allCatIds = [
+    ...new Set(ps.flatMap((p: any) => (p.categoryIds ?? []).map((id: any) => id.toString()))),
+  ];
+  const categories = allCatIds.length > 0
+    ? await Category.find({ _id: { $in: allCatIds } }).lean()
+    : [];
+  const catMap = new Map(categories.map((c: any) => [c._id.toString(), c]));
+  const products = (ps as any[]).map((p) =>
+    mapMongoProductToUiProduct(
+      p,
+      (p.categoryIds ?? []).map((id: any) => catMap.get(id.toString())).filter(Boolean),
+    ),
+  );
+  return { products, total };
+}
+
 export async function getProductUiById(id: string): Promise<UiProduct | null> {
   await connectDB();
   if (!mongoose.isValidObjectId(id)) return null;
